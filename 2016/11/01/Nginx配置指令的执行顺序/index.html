@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="Nginx学习笔记，源自章亦春的教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx配置指令的执行顺序">
+<meta property="og:url" content="http://yoursite.com/2016/11/01/Nginx配置指令的执行顺序/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="Nginx学习笔记，源自章亦春的教程">
+<meta property="og:updated_time" content="2016-11-02T07:57:04.200Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx配置指令的执行顺序">
+<meta name="twitter:description" content="Nginx学习笔记，源自章亦春的教程">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Nginx配置指令的执行顺序 | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XMLHttpRequest/">XMLHttpRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hmm/">hmm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入，报错注入/">sql注入，报错注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssrf/">ssrf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thread/">thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绕过/">绕过</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Nginx配置指令的执行顺序" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/01/Nginx配置指令的执行顺序/" class="article-date">
+      <time datetime="2016-11-01T11:49:05.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx配置指令的执行顺序
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Nginx配置指令的执行顺序（一）"><a href="#Nginx配置指令的执行顺序（一）" class="headerlink" title="Nginx配置指令的执行顺序（一）"></a>Nginx配置指令的执行顺序（一）</h2><p>指令的执行顺序跟指令的运行阶段有关，Nginx的请求处理阶段有11个之多，比较常见的有三个，按执行顺序是：rewrite阶段、access阶段、content阶段<br>set指令处于rewrite阶段，而echo处于content阶段<br>处于用一阶段的指令，按着配置顺序执行。<br>打开debug的方式：./configure –with-debug  make make install  并在配置文件中设置 error_log logs/error.log debug;<br>如何得知指令的执行阶段？ 查看文档 phase: content<br>并不是所有的指令都和某个阶段相关联，如geo和map，这些指令是声明性的，即不产生某种动作或者过程。</p>
+<h2 id="Nginx配置指令的执行顺序（二）"><a href="#Nginx配置指令的执行顺序（二）" class="headerlink" title="Nginx配置指令的执行顺序（二）"></a>Nginx配置指令的执行顺序（二）</h2><p>ngx_set_misc模块的set_unescape_uri指令运行在rewrite阶段，ngx_set_misc模块的指令还可以和ngx_rewrite的指令混合在一起依次执行。例子如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    set $a &quot;hello%20world&quot;;</div><div class="line">    set_unescape_uri $b $a;</div><div class="line">    set $c &quot;$b!&quot;;</div><div class="line"></div><div class="line">    echo $c;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>访问这个接口可以得到：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/test&apos;</div><div class="line">hello world!</div></pre></td></tr></table></figure></p>
+<p>从结果可以看出，不同模块的指令顺序执行了（按着配置顺序）</p>
+<p>ngx_lua模块中的set_by_lua配置指令也可以和ngx_rewrite模块的指令混合使用。set_by_lua指令支持通过一段lua代码来计算出一个结果，然后赋值给指定Nginx变量。<br>下面我们就来看一个 set_by_lua 指令与 set 指令混合使用的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    set $a 32;</div><div class="line">    set $b 56;</div><div class="line">    set_by_lua $c &quot;return ngx.var.a + ngx.var.b&quot;;</div><div class="line">    set $equation &quot;$a + $b = $c&quot;;</div><div class="line"></div><div class="line">    echo $equation;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个例子值得注意的地方是：首先，我们在 Lua 代码中是通过 ngx.var.VARIABLE 接口来读取 Nginx 变量 $VARIABLE 的；其次，因为 Nginx 变量的值只有字符串这一种类型，所以在 Lua 代码里读取 ngx.var.a 和 ngx.var.b 时得到的其实都是 Lua 字符串类型的值 “32” 和 “56”；接着，我们对两个字符串作加法运算会触发 Lua 对加数进行自动类型转换（Lua 会把两个加数先转换为数值类型再求和）；然后，我们在 Lua 代码中把最终结果通过 return 语句返回给外面的 Nginx 变量 $c；最后， ngx_lua 模块在给 $c 实际赋值之前，也会把 return 语句返回的数值类型的结果，也就是 Lua 加法计算得出的“和”，自动转换为字符串（这同样是因为 Nginx 变量的值只能是字符串）。</p>
+<p>这个例子的实际运行结果符合我们的期望：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/test&apos;</div><div class="line">32 + 56 = 88</div></pre></td></tr></table></figure></p>
+<h2 id="Nginx配置指令的执行顺序（三）"><a href="#Nginx配置指令的执行顺序（三）" class="headerlink" title="Nginx配置指令的执行顺序（三）"></a>Nginx配置指令的执行顺序（三）</h2><p>第三方模块ngx_headers_more提供了一系列配置指令，用于操纵当前请求的请求头和响应头。其中有一条名叫 more_set_input_headers 的指令可以在 rewrite 阶段改写指定的请求头（或者在请求头不存在时自动创建）。这条指令总是运行在 rewrite 阶段的末尾<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">?     set $value dog;</div><div class="line">?     more_set_input_headers &quot;X-Species: $value&quot;;</div><div class="line">?     set $value cat;</div><div class="line">?</div><div class="line">?     echo &quot;X-Species: $http_x_species&quot;;</div><div class="line">? &#125;</div><div class="line"></div><div class="line">$ curl &apos;http://localhost:8080/test&apos;</div><div class="line">X-Species: cat</div></pre></td></tr></table></figure></p>
+<p>第三方模块ngx_lua提供的rewrite_by_lua配置指令也运行在rewrite阶段的末尾<br>那么rewrite_by_lua 和 more_set_input_headers 的执行顺序又是怎样呢？答案是：不一定。我们应该避免写出依赖二者顺序的配置</p>
+<p>在rewrite阶段之后有一个access请求处理阶段，ngx_auth_request就运行在access阶段，在access阶段运行的配置指令多是执行访问控制性质的任务，比如检查用户的访问权限，检查用户的来源ip是否合法，诸如此类。<br>例如，标准模块 ngx_access 提供的 allow 和 deny 配置指令可用于控制哪些 IP 地址可以访问，哪些不可以：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">location /hello &#123;</div><div class="line">    allow 127.0.0.1;</div><div class="line">    deny all;</div><div class="line"></div><div class="line">    echo &quot;hello world&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>ngx_access 模块自己的多条配置指令之间是按顺序执行的，直到遇到第一条满足条件的指令就不再执行后续的 allow 和 deny 指令。如果首先匹配的指令是 allow，则会继续执行后续其他模块的指令或者跳到后续的处理阶段；而如果首先满足的是 deny 则会立即中止当前整个请求的处理，并立即返回 403 错误页。所以看上面这个例子，如果是从本地访问的，则首先匹配 allow 127.0.0.1 这一条语句，于是 Nginx 就继续往下执行其他模块的指令以及后续的处理阶段；而如果是从其他机器访问，则首先匹配的则是 deny all 这一条语句，即拒绝所有地址，它会导致 403 错误页立即返回给客户端。<br>值得一提的是， ngx_access 模块还支持所谓的“CIDR 记法”来表示一个网段，例如 169.200.179.4/24 则表示路由前缀是 169.200.179.0（或者说子网掩码是 255.255.255.0）的网段。</p>
+<p>因为 ngx_access 模块的指令运行在 access 阶段，而 access 阶段又处于 rewrite 阶段之后，所以前面我们见到的所有那些在 rewrite 阶段运行的配置指令，都总是在 allow 和 deny 之前执行，而无论它们在配置文件中的书写顺序是怎样的。所以，为了避免阅读配置时的混乱，我们应该总是让指令的书写顺序和它们的实际执行顺序保持一致。<br>ngx_lua 模块提供了配置指令 access_by_lua，用于在 access 请求处理阶段插入用户 Lua 代码。这条指令运行于 access 阶段的末尾，因此总是在 allow 和 deny 这样的指令之后运行，虽然它们同属 access 阶段。一般我们通过 access_by_lua 在 ngx_access 这样的模块检查过客户端 IP 地址之后，再通过 Lua 代码执行一系列更为复杂的请求验证操作，比如实时查询数据库或者其他后端服务，以验证当前用户的身份或权限。</p>
+<h2 id="Nginx-配置指令的执行顺序（四）"><a href="#Nginx-配置指令的执行顺序（四）" class="headerlink" title="Nginx 配置指令的执行顺序（四）"></a>Nginx 配置指令的执行顺序（四）</h2><p>ngx_lua 模块提供了配置指令 access_by_lua，用于在 access 请求处理阶段插入用户 Lua 代码。这条指令运行于 access 阶段的末尾，因此总是在 allow 和 deny 这样的指令之后运行，虽然它们同属 access 阶段。一般我们通过 access_by_lua 在 ngx_access 这样的模块检查过客户端 IP 地址之后，再通过 Lua 代码执行一系列更为复杂的请求验证操作，比如实时查询数据库或者其他后端服务，以验证当前用户的身份或权限。</p>
+<p>我们来看一个简单的例子，利用 access_by_lua 来实现 ngx_access 模块的 IP 地址过滤功能：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">location /hello &#123;</div><div class="line">    access_by_lua &apos;</div><div class="line">        if ngx.var.remote_addr == &quot;127.0.0.1&quot; then</div><div class="line">            return</div><div class="line">        end</div><div class="line"></div><div class="line">        ngx.exit(403)</div><div class="line">    &apos;;</div><div class="line"></div><div class="line">    echo &quot;hello world&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当然，上面使用 access_by_lua 的例子还可以通过换用 $binary_remote_addr 内建变量进行优化，因为 $binary_remote_addr 读出的是二进制形式的 IP 地址，而 $remote_addr 则返回更长一些的字符串形式的地址。更短的地址意味着用 Lua 进行字符串比较时通常可以更快。</p>
+<h2 id="Nginx-配置指令的执行顺序（五）"><a href="#Nginx-配置指令的执行顺序（五）" class="headerlink" title="Nginx 配置指令的执行顺序（五）"></a>Nginx 配置指令的执行顺序（五）</h2><p>content阶段：echo echo_exec proxy_pass echo_location content_by_lua<br>content阶段在rewrite和access之后，命令也会在其后执行<br>content阶段的指令通常不能同时配置，也不能同时使用。当配置指令时，会注册内容处理程序，而处理程序只能注册一个。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    echo hello;</div><div class="line">    content_by_lua &apos;ngx,say(&quot;world&quot;)&apos;   这两个命令不能同时配置</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>连个echo是可以的，两个content_by_lua是不可以的</p>
+<p>echo和proxy_pass是不能同时配置的<br>但是运行在输出过滤器这个特殊阶段的echo_before_body 和 echo_after_body 是可以和proxy_pass一起使用的。</p>
+<h2 id="Nginx-配置指令的执行顺序（六）"><a href="#Nginx-配置指令的执行顺序（六）" class="headerlink" title="Nginx 配置指令的执行顺序（六）"></a>Nginx 配置指令的执行顺序（六）</h2><p>当content阶段没有注册任何content命令，那么就不会有内容处理程序，这时请求便会被映射到文件系统的静态资源服务模块，<br>nginx一般在content阶段安排3个这样的服务模块，ngx_index、ngx_autoindex、ngx_static<br>ngx_index 和 ngx_autoindex 模块都只会作用于那些 URI 以 / 结尾的请求，例如请求 GET /cats/，而对于不以 / 结尾的请求则会直接忽略，同时把处理权移交给 content 阶段的下一个模块。而 ngx_static 模块则刚好相反，直接忽略那些 URI 以 / 结尾的请求。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line">    root /var/www/;</div><div class="line">    index index.htm index.html;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为了进一步确认 ngx_index 模块在找到文件时的“内部跳转”行为，我们不妨设计下面这个小例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line">    root /var/www/;</div><div class="line">    index index.html;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /index.html &#123;</div><div class="line">    set $a 32;</div><div class="line">    echo &quot;a = $a&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>此时我们在本机的 /var/www/ 目录下创建一个空白的 index.html 文件，并确保该文件的权限设置对于运行 Nginx worker 进程的帐户可读。然后我们来请求一下根位置（/）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/&apos;</div><div class="line">a = 32</div></pre></td></tr></table></figure></p>
+<p>所谓 directory index 便是生成“目录索引”的意思，典型的方式就是生成一个网页，上面列举出 /var/www/ 目录下的所有文件和子目录。而运行在 ngx_index 模块之后的 ngx_autoindex 模块就可以用于自动生成这样的“目录索引”网页。我们来把上例修改一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line">    root /var/www/;</div><div class="line">    index index.html;</div><div class="line">    autoindex on;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在 content 阶段默认“垫底”的最后一个模块便是极为常用的 ngx_static 模块。这个模块主要实现服务静态文件的功能。比方说，一个网站的静态资源，包括静态 .html 文件、静态 .css 文件、静态 .js 文件、以及静态图片文件等等，全部可以通过这个模块对外服务。前面介绍的 ngx_index 模块虽然可以在指定的首页文件存在时发起“内部跳转”，但真正把相应的首页文件服务出去（即把该文件的内容作为响应体数据输出，并设置相应的响应头），还是得靠这个 ngx_static 模块来完成。</p>
+<h2 id="Nginx-配置指令的执行顺序（七）"><a href="#Nginx-配置指令的执行顺序（七）" class="headerlink" title="Nginx 配置指令的执行顺序（七）"></a>Nginx 配置指令的执行顺序（七）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">location / &#123;</div><div class="line">    root /var/www/;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>root指令只是声明了“文档根目录”，ngx_static总是处于开启状态，<br>当请求到来时<a href="http://localhost:8080/index.html,由于没有配置content指令，也就没有内容处理程序，那么就由三个服务模块来处理，ngx_index和ngx_autoindex看到url不是以/结尾，直接放弃。ngx_static模块根据root指令指定的根目录分别将请求URL映射为/var/www/index.html和/var/www/hello.html在确认这两个文件存在后，将它们作为响应体输出，并自动配置Content-Type、Content-Length以及Last-Modified等响应头。" target="_blank" rel="external">http://localhost:8080/index.html,由于没有配置content指令，也就没有内容处理程序，那么就由三个服务模块来处理，ngx_index和ngx_autoindex看到url不是以/结尾，直接放弃。ngx_static模块根据root指令指定的根目录分别将请求URL映射为/var/www/index.html和/var/www/hello.html在确认这两个文件存在后，将它们作为响应体输出，并自动配置Content-Type、Content-Length以及Last-Modified等响应头。</a><br>如果没使用root指定根目录，nginx会使用缺省的值，即“配置前缀”（prefix）路径下的html子目录。<br>配置前缀由什么来决定呢？默认情况下，就是nginx安装时的根目录（./configure –prefix的值），我们也可以在启动nginx时通过-p来指定。如nginx -p /home/www/</p>
+<h2 id="Nginx-配置指令的执行顺序（八）"><a href="#Nginx-配置指令的执行顺序（八）" class="headerlink" title="Nginx 配置指令的执行顺序（八）"></a>Nginx 配置指令的执行顺序（八）</h2><p>讨论余下的阶段<br>11个阶段按着顺序是：post-read、server-rewrite、find-config、rewrite、post-rewrite、preaccess、access、post-access、try-files、content、log<br>最先执行的post-read阶段在nginx读取并解析完请求头之后便立即开始运行。<br>标准模块ngx_realip就在post-read阶段注册了处理程序，功能是迫使nginx认为当前请求的来源地址是指定的某一个请求头的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line">    </div><div class="line">    set_real_ip_from 127.0.0.1;</div><div class="line">    real_ip_header X-My-IP;</div><div class="line">    </div><div class="line">    location / &#123;</div><div class="line">        set $addr $remote_addr;</div><div class="line">        echo &quot;from: $addr&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果在请求时，没有指定X-My-IP，或者指定的ip不合法，则不会更改。<br>set_real_ip_from 可以有多个，也可以指定地址段。<br>set_real_ip_from 10.32.10.5<br>set_real_ip_from 127.0.0.0/24<br>有的读者可能会问， ngx_realip 模块究竟有什么实际用途呢？为什么我们需要去改写请求的来源地址呢？答案是：当 Nginx 处理的请求经过了某个 HTTP 代理服务器的转发时，这个模块就变得特别有用。当原始的用户请求经过转发之后，Nginx 接收到的请求的来源地址无一例外地变成了该代理服务器的 IP 地址，于是 Nginx 以及 Nginx 背后的应用就无法知道原始请求的真实来源。所以，一般我们会在 Nginx 之前的代理服务器中把请求的原始来源地址编码进某个特殊的 HTTP 请求头中（例如上例中的 X-My-IP 请求头），然后再在 Nginx 一侧把这个请求头中编码的地址恢复出来。这样 Nginx 中的后续处理阶段（包括 Nginx 背后的各种后端应用）就会认为这些请求直接来自那些原始的地址，代理服务器就仿佛不存在一样。正是因为这个需求，所以 ngx_realip 模块才需要在第一个处理阶段，即 post-read 阶段，注册处理程序，以便尽可能早地改写请求的来源。</p>
+<p>post-read 阶段之后便是 server-rewrite 阶段。我们曾在 （二） 中简单提到，当 ngx_rewrite 模块的配置指令直接书写在 server 配置块中时，基本上都是运行在 server-rewrite 阶段。下面就来看这样的一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /test &#123;</div><div class="line">        set $b &quot;$a, world&quot;;</div><div class="line">        echo $b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    set $a hello;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里，配置语句 set $a hello 直接写在了 server 配置块中，因此它就运行在 server-rewrite 阶段。而 server-rewrite 阶段要早于 rewrite 阶段运行，因此写在 location 配置块中的语句 set $b “$a, world” 便晚于外面的 set $a hello 语句运行。该例的测试结果证明了这一点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl localhost:8080/test</div><div class="line">hello, world</div></pre></td></tr></table></figure></p>
+<h2 id="Nginx-配置指令的执行顺序（九）"><a href="#Nginx-配置指令的执行顺序（九）" class="headerlink" title="Nginx 配置指令的执行顺序（九）"></a>Nginx 配置指令的执行顺序（九）</h2><p>server-rewrite之后是find-config阶段，这一阶段会把请求与location进行匹配。<br>之后是rewrite阶段。<br>之后是post-rewrite阶段，这一阶段，主要是完成rewrite阶段所要求的内部跳转。内部跳转的原理是：改变url，然后强行倒退到find-config阶段，但是强行倒退发生在post-rewrite阶段，这一阶段，主要是完成rewrite阶段所要求的内部跳转。内部跳转的原理是：改变url，然后强行倒退到find-config阶段，但是强行倒退发生在post-rewrite阶段，<br>为什么没有在rewrite阶段就跳转？原因是支持多次rewrite改写url，多次改写url，只会在post-rewrite阶段发生一次跳转，url值为最后一个rewrite命令。<br>如果rewrite指令配置在server块中（location外），那么并不会跳转，因为server块中的rewrite发生在匹配之前，即先改写url，再匹配，所有只匹配一次，不会跳转。</p>
+<h2 id="Nginx-配置指令的执行顺序（十）"><a href="#Nginx-配置指令的执行顺序（十）" class="headerlink" title="Nginx 配置指令的执行顺序（十）"></a>Nginx 配置指令的执行顺序（十）</h2><p>运行在post-rewrite阶段之后的是所谓的preaccess阶段，ngx_realip也在此阶段注册了处理程序。<br>运行在preaccess之后的是access<br>access 阶段之后便是 post-access 阶段。从这个阶段的名字，我们也能一眼看出它是紧跟在 access 阶段后面执行的。这个阶段也和 post-rewrite 阶段类似，并不支持 Nginx 模块注册处理程序，而是由 Nginx 核心自己完成一些处理工作。post-access 阶段主要用于配合 access 阶段实现标准 ngx_http_core 模块提供的配置指令 satisfy 的功能。</p>
+<p>对于多个 Nginx 模块注册在 access 阶段的处理程序， satisfy 配置指令可以用于控制它们彼此之间的协作方式。比如模块 A 和 B 都在 access 阶段注册了与访问控制相关的处理程序，那就有两种协作方式，一是模块 A 和模块 B 都得通过验证才算通过，二是模块 A 和模块 B 只要其中任一个通过验证就算通过。第一种协作方式称为 all 方式（或者说“与关系”），第二种方式则被称为 any 方式（或者说“或关系”）。默认情况下，Nginx 使用的是 all 方式。下面是一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    satisfy all;    #satisfy any;</div><div class="line"></div><div class="line">    deny all;</div><div class="line">    access_by_lua &apos;ngx.exit(ngx.OK)&apos;;        #access_by_lua &apos;ngx.exit(ngx.HTTP_FORBIDDEN)&apos;;</div><div class="line"></div><div class="line">    echo something important;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="Nginx-配置指令的执行顺序（十一）"><a href="#Nginx-配置指令的执行顺序（十一）" class="headerlink" title="Nginx 配置指令的执行顺序（十一）"></a>Nginx 配置指令的执行顺序（十一）</h2><p>之后是try_files<br>try_files 指令接受两个以上任意数量的参数，每个参数都指定了一个 URI. 这里假设配置了 N 个参数，则 Nginx 会在 try-files 阶段，依次把前 N-1 个参数映射为文件系统上的对象（文件或者目录），然后检查这些对象是否存在。一旦 Nginx 发现某个文件系统对象存在，就会在 try-files 阶段把当前请求的 URI 改写为该对象所对应的参数 URI（但不会包含末尾的斜杠字符，也不会发生 “内部跳转”）。如果前 N-1 个参数所对应的文件系统对象都不存在，try-files 阶段就会立即发起“内部跳转”到最后一个参数（即第 N 个参数）所指定的 URI.<br>不妨来看下面这个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">root /var/www/;</div><div class="line"></div><div class="line">location /test &#123;</div><div class="line">    try_files /foo /bar/ /baz;       #try_files /foo /bar/ =404;</div><div class="line">    echo &quot;uri: $uri&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /foo &#123;</div><div class="line">    echo foo;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /bar/ &#123;</div><div class="line">    echo bar;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /baz &#123;</div><div class="line">    echo baz;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/01/Nginx配置指令的执行顺序/">Nginx配置指令的执行顺序</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-11-01, 19:49:05</p>
+        <p><span>最后更新:</span>2016-11-02, 15:57:04</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/01/Nginx配置指令的执行顺序/" title="Nginx配置指令的执行顺序">http://yoursite.com/2016/11/01/Nginx配置指令的执行顺序/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/11/01/Nginx配置指令的执行顺序/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/11/01/python线程总结/">
+                    python线程总结
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/01/Nginx源码安装/">
+                    Nginx源码安装
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx配置指令的执行顺序（一）"><span class="toc-number">1.</span> <span class="toc-text">Nginx配置指令的执行顺序（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx配置指令的执行顺序（二）"><span class="toc-number">2.</span> <span class="toc-text">Nginx配置指令的执行顺序（二）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx配置指令的执行顺序（三）"><span class="toc-number">3.</span> <span class="toc-text">Nginx配置指令的执行顺序（三）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（四）"><span class="toc-number">4.</span> <span class="toc-text">Nginx 配置指令的执行顺序（四）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（五）"><span class="toc-number">5.</span> <span class="toc-text">Nginx 配置指令的执行顺序（五）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（六）"><span class="toc-number">6.</span> <span class="toc-text">Nginx 配置指令的执行顺序（六）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（七）"><span class="toc-number">7.</span> <span class="toc-text">Nginx 配置指令的执行顺序（七）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（八）"><span class="toc-number">8.</span> <span class="toc-text">Nginx 配置指令的执行顺序（八）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（九）"><span class="toc-number">9.</span> <span class="toc-text">Nginx 配置指令的执行顺序（九）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（十）"><span class="toc-number">10.</span> <span class="toc-text">Nginx 配置指令的执行顺序（十）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-配置指令的执行顺序（十一）"><span class="toc-number">11.</span> <span class="toc-text">Nginx 配置指令的执行顺序（十一）</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Nginx配置指令的执行顺序　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/11/01/Nginx配置指令的执行顺序/" data-title="Nginx配置指令的执行顺序" data-url="http://yoursite.com/2016/11/01/Nginx配置指令的执行顺序/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/01/python线程总结/" title="上一篇: python线程总结">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/01/Nginx源码安装/" title="下一篇: Nginx源码安装">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/19/baidu面试题整理/">baidu面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/ssrf漏洞总结/">ssrf漏洞总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/17/hmm代码实现/">hmm代码实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/linux中的几个命令/">linux中的几个命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/python异常整理/">python异常整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第四场/">baidu-CTF-10月-第四场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第三场/">baidu-CTF-10月-第三场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第二场/">baidu-CTF-10月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-11月-第二场/">baidu-CTF-11月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/python集合总结/">python集合总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/lua学习笔记/">lua学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/requests模块整理/">requests模块整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/python变量作用域说明/">python变量作用域说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/python线程总结/">python线程总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx配置指令的执行顺序/">Nginx配置指令的执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx源码安装/">Nginx源码安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/31/Nginx内置的与http相关的变量/">Nginx内置的与http相关的变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/sql注入常用语句整理/">sql注入常用语句整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/python-执行系统命令/">python-执行系统命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/报错注入总结/">报错注入总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/sql-inject-attact-绕过/">sql-inject-attact-绕过</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/baidu-CTF-10月-第一场/">baidu-CTF-10月-第一场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/Nginx变量漫谈/">Nginx变量漫谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-3/">baidu CTF 3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/23/Ajax-Security/">Ajax Security</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/baidu-CTF-1/">baidu CTF 1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

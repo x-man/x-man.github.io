@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="Nginx学习笔记，源自章亦春的教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx变量漫谈">
+<meta property="og:url" content="http://yoursite.com/2016/10/10/Nginx变量漫谈/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="Nginx学习笔记，源自章亦春的教程">
+<meta property="og:updated_time" content="2016-11-01T11:48:27.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx变量漫谈">
+<meta name="twitter:description" content="Nginx学习笔记，源自章亦春的教程">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Nginx变量漫谈 | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XMLHttpRequest/">XMLHttpRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hmm/">hmm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入，报错注入/">sql注入，报错注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssrf/">ssrf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thread/">thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绕过/">绕过</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Nginx变量漫谈" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/10/Nginx变量漫谈/" class="article-date">
+      <time datetime="2016-10-10T12:43:00.000Z" itemprop="datePublished">2016-10-10</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx变量漫谈
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>教程地址：<a href="http://openresty.org/download/agentzh-nginx-tutorials-zhcn.html" target="_blank" rel="external">http://openresty.org/download/agentzh-nginx-tutorials-zhcn.html</a></p>
+<h2 id="变量漫谈（一）"><a href="#变量漫谈（一）" class="headerlink" title="变量漫谈（一）"></a>变量漫谈（一）</h2><p>在 Nginx 配置中，变量只能存放一种类型的值，因为也只存在一种类型的值，那就是字符串。<br>比如我们的 nginx.conf 文件中有下面这一行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">set $a &quot;hello world&quot;;</div></pre></td></tr></table></figure></p>
+<p>我们使用了标准 ngx_rewrite 模块的 set 配置指令对变量 $a 进行了赋值操作。特别地，我们把字符串 hello world 赋给了它。<br>这种表示方法的好处也是显而易见的，那就是可以直接把变量嵌入到字符串常量中以构造出新的字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">set $a hello;</div><div class="line">set $b &quot;$a, $a&quot;;</div></pre></td></tr></table></figure></p>
+<p>我们来看一个比较完整的配置示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /test &#123;</div><div class="line">        set $foo hello;</div><div class="line">        echo &quot;foo: $foo&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果我们想通过 echo 指令直接输出含有“美元符”（$）的字符串，那么有没有办法把特殊的 $ 字符给转义掉呢？答案是否定的（至少到目前最新的 Nginx 稳定版 1.0.10）。不过幸运的是，我们可以绕过这个限制，比如通过不支持“变量插值”的模块配置指令专门构造出取值为 $ 的 Nginx 变量，然后再在 echo 中使用这个变量。看下面这个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">geo $dollar &#123;</div><div class="line">    default &quot;$&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /test &#123;</div><div class="line">        echo &quot;This is a dollar sign: $dollar&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试结果如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/test&apos;</div><div class="line">This is a dollar sign: $</div></pre></td></tr></table></figure></p>
+<p>在“变量插值”的上下文中，还有一种特殊情况，即当引用的变量名之后紧跟着变量名的构成字符时（比如后跟字母、数字以及下划线），我们就需要使用特别的记法来消除歧义，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /test &#123;</div><div class="line">        set $first &quot;hello &quot;;</div><div class="line">        echo &quot;$&#123;first&#125;world&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Nginx变量的创建是在配置文件被加载时，也就是nginx启动时，而变量赋值却发生在请求被处理时，说明无法在请求处理时动态的创建变量。</p>
+<p>Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，甚至可以跨越不同虚拟主机的 server 配置块。我们来看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /foo &#123;</div><div class="line">        echo &quot;foo = [$foo]&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location /bar &#123;</div><div class="line">        set $foo 32;</div><div class="line">        echo &quot;foo = [$foo]&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里我们在 location /bar 中用 set 指令创建了变量 $foo，于是在整个配置文件中这个变量都是可见的，因此我们可以在 location /foo 中直接引用这个变量而不用担心 Nginx 会报错。</p>
+<p>下面是在命令行上用 curl 工具访问这两个接口的结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/foo&apos;</div><div class="line">foo = []</div><div class="line"></div><div class="line">$ curl &apos;http://localhost:8080/bar&apos;</div><div class="line">foo = [32]</div><div class="line"></div><div class="line">$ curl &apos;http://localhost:8080/foo&apos;</div><div class="line">foo = []</div></pre></td></tr></table></figure></p>
+<p>从这个例子我们可以看到，set 指令因为是在 location /bar 中使用的，所以赋值操作只会在访问 /bar 的请求中执行。而请求 /foo 接口时，我们总是得到空的 $foo 值，因为用户变量未赋值就输出的话，得到的便是空字符串。</p>
+<p>从这个例子我们可以窥见的另一个重要特性是，Nginx 变量名的可见范围虽然是整个配置，但每个请求都有所有变量的独立副本，或者说都有各变量用来存放值的容器的独立副本，彼此互不干扰。比如前面我们请求了 /bar 接口后，$foo 变量被赋予了值 32，但它丝毫不会影响后续对 /foo 接口的请求所对应的 $foo 值（它仍然是空的！），因为各个请求都有自己独立的 $foo 变量的副本。</p>
+<p>对于 Nginx 新手来说，最常见的错误之一，就是将 Nginx 变量理解成某种在请求之间全局共享的东西，或者说“全局变量”。而事实上，Nginx 变量的生命期是不可能跨越请求边界的。</p>
+<h2 id="变量漫谈（二）"><a href="#变量漫谈（二）" class="headerlink" title="变量漫谈（二）"></a>变量漫谈（二）</h2><p>关于 Nginx 变量的另一个常见误区是认为变量容器的生命期，是与 location 配置块绑定的。其实不然。我们来看一个涉及“内部跳转”的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /foo &#123;</div><div class="line">        set $a hello;</div><div class="line">        echo_exec /bar;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location /bar &#123;</div><div class="line">        echo &quot;a = [$a]&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这是一个内部跳转的例子，内部跳转，变量的生命周期贯穿整个请求</p>
+<h4 id="nginx内建变量"><a href="#nginx内建变量" class="headerlink" title="nginx内建变量"></a>nginx内建变量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    echo &quot;uri = $uri&quot;;  解码，不含参数</div><div class="line">    echo &quot;request_uri = $request_uri&quot;;  不解码，含参数</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    echo &quot;name: $arg_name&quot;;  不解码  name=%27www%27</div><div class="line">    echo &quot;class: $arg_class&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Nginx 会在匹配参数名之前，自动把原始请求中的参数名调整为全部小写的形式。所有不区分大小写</p>
+<p>如果你想对 URI 参数值中的 %XX 这样的编码序列进行解码，可以使用第三方 ngx_set_misc 模块提供的 set_unescape_uri 配置指令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    set_unescape_uri $name $arg_name;</div><div class="line">    set_unescape_uri $class $arg_class;</div><div class="line"></div><div class="line">    echo &quot;name: $name&quot;;</div><div class="line">    echo &quot;class: $class&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>像 $arg_XXX 这种类型的变量拥有无穷无尽种可能的名字，所以它们并不对应任何存放值的容器。而且这种变量在 Nginx 核心中是经过特别处理的，第三方 Nginx 模块是不能提供这样充满魔法的内建变量的。<br>类似 $arg_XXX 的内建变量还有不少，比如用来取 cookie 值的 $cookie_XXX 变量群，用来取请求头的 $http_XXX 变量群，以及用来取响应头的 $sent_http_XXX 变量群。这里就不一一介绍了，感兴趣的读者可以参考 ngx_http_core 模块的官方文档。<br>许多内建变量都是只读的</p>
+<h2 id="Nginx-变量漫谈（三）"><a href="#Nginx-变量漫谈（三）" class="headerlink" title="Nginx 变量漫谈（三）"></a>Nginx 变量漫谈（三）</h2><p>也有一些内建变量是支持改写的，其中一个例子是 $args.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    set $orig_args $args;</div><div class="line">    set $args &quot;a=3&amp;b=4&quot;;</div><div class="line"></div><div class="line">    echo &quot;original args: $orig_args&quot;;</div><div class="line">    echo &quot;args: $args&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="Nginx-变量漫谈（四）"><a href="#Nginx-变量漫谈（四）" class="headerlink" title="Nginx 变量漫谈（四）"></a>Nginx 变量漫谈（四）</h2><p>map是会缓存计算结果的，<br>map是惰性求值的，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">map $args $foo &#123;</div><div class="line">    default     0;</div><div class="line">    debug       1;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 8080;</div><div class="line"></div><div class="line">    location /test &#123;</div><div class="line">        set $orig_foo $foo;</div><div class="line">        set $args debug;</div><div class="line"></div><div class="line">        echo &quot;original foo: $orig_foo&quot;;</div><div class="line">        echo &quot;foo: $foo&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="Nginx-变量漫谈（五）"><a href="#Nginx-变量漫谈（五）" class="headerlink" title="Nginx 变量漫谈（五）"></a>Nginx 变量漫谈（五）</h2><p>前面在 （二） 中我们已经了解到变量值容器的生命期是与请求绑定的，但是我当时有意避开了“请求”的正式定义。大家应当一直默认这里的“请求”都是指客户端发起的 HTTP 请求。其实在 Nginx 世界里有两种类型的“请求”，一种叫做“主请求”（main request），而另一种则叫做“子请求”（subrequest）。我们先来介绍一下它们。</p>
+<p>所谓“主请求”，就是由 HTTP 客户端从 Nginx 外部发起的请求。我们前面见到的所有例子都只涉及到“主请求”，包括 （二） 中那两个使用 echo_exec 和 rewrite 指令发起“内部跳转”的例子。<br>而“子请求”则是由 Nginx 正在处理的请求在 Nginx 内部发起的一种级联请求。“子请求”在外观上很像 HTTP 请求，但实现上却和 HTTP 协议乃至网络通信一点儿关系都没有。它是 Nginx 内部的一种抽象调用，目的是为了方便用户把“主请求”的任务分解为多个较小粒度的“内部请求”，并发或串行地访问多个 location 接口，然后由这些 location 接口通力协作，共同完成整个“主请求”。当然，“子请求”的概念是相对的，任何一个“子请求”也可以再发起更多的“子子请求”，甚至可以玩递归调用（即自己调用自己）。当一个请求发起一个“子请求”的时候，按照 Nginx 的术语，习惯把前者称为后者的“父请求”（parent request）。值得一提的是，Apache 服务器中其实也有“子请求”的概念，所以来自 Apache 世界的读者对此应当不会感到陌生。</p>
+<p>下面就来看一个使用了“子请求”的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">location /main &#123;</div><div class="line">    echo_location /foo;</div><div class="line">    echo_location /bar;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /foo &#123;</div><div class="line">    echo foo;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /bar &#123;</div><div class="line">    echo bar;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里在 location /main 中，通过第三方 ngx_echo 模块的 echo_location 指令分别发起到 /foo 和 /bar 这两个接口的 GET 类型的“子请求”。由 echo_location 发起的“子请求”，其执行是按照配置书写的顺序串行处理的，即只有当 /foo 请求处理完毕之后，才会接着处理 /bar 请求。这两个“子请求”的输出会按执行顺序拼接起来，作为 /main 接口的最终输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/main&apos;</div><div class="line">foo</div><div class="line">bar</div></pre></td></tr></table></figure></p>
+<p>回到先前对 Nginx 变量值容器的生命期的讨论，我们现在依旧可以说，它们的生命期是与当前请求相关联的。每个请求都有所有变量值容器的独立副本，只不过当前请求既可以是“主请求”，也可以是“子请求”。即便是父子请求之间，同名变量一般也不会相互干扰。让我们来通过一个小实验证明一下这个说法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">location /main &#123;</div><div class="line">    set $var main;</div><div class="line"></div><div class="line">    echo_location /foo;</div><div class="line">    echo_location /bar;</div><div class="line"></div><div class="line">    echo &quot;main: $var&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /foo &#123;</div><div class="line">    set $var foo;</div><div class="line">    echo &quot;foo: $var&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /bar &#123;</div><div class="line">    set $var bar;</div><div class="line">    echo &quot;bar: $var&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这个例子中，我们分别在 /main，/foo 和 /bar 这三个 location 配置块中为同一名字的变量，$var，分别设置了不同的值并予以输出。特别地，我们在 /main 接口中，故意在调用过 /foo 和 /bar 这两个“子请求”之后，再输出它自己的 $var 变量的值。请求 /main 接口的结果是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/main&apos;</div><div class="line">foo: foo</div><div class="line">bar: bar</div><div class="line">main: main</div></pre></td></tr></table></figure></p>
+<p>不幸的是，一些 Nginx 模块发起的“子请求”却会自动共享其“父请求”的变量值容器，比如第三方模块 ngx_auth_request. 下面是一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">location /main &#123;</div><div class="line">    set $var main;</div><div class="line">    auth_request /sub;</div><div class="line">    echo &quot;main: $var&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /sub &#123;</div><div class="line">    set $var sub;</div><div class="line">    echo &quot;sub: $var&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里我们在 /main 接口中先为 $var 变量赋初值 main，然后使用 ngx_auth_request 模块提供的配置指令 auth_request，发起一个到 /sub 接口的“子请求”，最后利用 echo 指令输出变量 $var 的值。而我们在 /sub 接口中则故意把 $var 变量的值改写成 sub. 访问 /main 接口的结果如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/main&apos;</div><div class="line">main: sub</div></pre></td></tr></table></figure></p>
+<p>我们看到，/sub 接口对 $var 变量值的修改影响到了主请求 /main. 所以 ngx_auth_request 模块发起的“子请求”确实是与其“父请求”共享一套 Nginx 变量的值容器。</p>
+<p>对于上面这个例子，相信有读者会问：“为什么‘子请求’ /sub 的输出没有出现在最终的输出里呢？”答案很简单，那就是因为 auth_request 指令会自动忽略“子请求”的响应体，而只检查“子请求”的响应状态码。当状态码是 2XX 的时候，auth_request 指令会忽略“子请求”而让 Nginx 继续处理当前的请求，否则它就会立即中断当前（主）请求的执行，返回相应的出错页。在我们的例子中，/sub “子请求”只是使用 echo 指令作了一些输出，所以隐式地返回了指示正常的 200 状态码。</p>
+<p>如 ngx_auth_request 模块这样父子请求共享一套 Nginx 变量的行为，虽然可以让父子请求之间的数据双向传递变得极为容易，但是对于足够复杂的配置，却也经常导致不少难于调试的诡异 bug. 因为用户时常不知道“父请求”的某个 Nginx 变量的值，其实已经在它的某个“子请求”中被意外修改了。诸如此类的因共享而导致的不好的“副作用”，让包括 ngx_echo， ngx_lua，以及 ngx_srcache 在内的许多第三方模块都选择了禁用父子请求间的变量共享。</p>
+<h2 id="变量漫谈-（六）"><a href="#变量漫谈-（六）" class="headerlink" title="变量漫谈 （六）"></a>变量漫谈 （六）</h2><p>并非所有的内建变量都作用于当前请求。少数内建变量只作用于“主请求”，比如由标准模块 ngx_http_core 提供的内建变量 $request_method.</p>
+<p>变量 $request_method 在读取时，总是会得到“主请求”的请求方法，比如 GET、POST 之类。我们来测试一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location /main &#123;</div><div class="line">    echo &quot;main method: $request_method&quot;;</div><div class="line">    echo_location /sub;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /sub &#123;</div><div class="line">    echo &quot;sub method: $request_method&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这个例子里，/main 和 /sub 接口都会分别输出 $request_method 的值。同时，我们在 /main 接口里利用 echo_location 指令发起一个到 /sub 接口的 GET “子请求”。我们现在利用 curl 命令行工具来发起一个到 /main 接口的 POST 请求：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ curl --data hello &apos;http://localhost:8080/main&apos;</div><div class="line">main method: POST</div><div class="line">sub method: POST</div></pre></td></tr></table></figure></p>
+<p>我们并不能通过标准的 $request_method 变量取得“子请求”的请求方法。为了达到我们最初的目的，我们需要求助于第三方模块 ngx_echo 提供的内建变量 $echo_request_method：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location /main &#123;</div><div class="line">    echo &quot;main method: $echo_request_method&quot;;</div><div class="line">    echo_location /sub;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location /sub &#123;</div><div class="line">    echo &quot;sub method: $echo_request_method&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>此时的输出终于是我们想要的了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ curl --data hello &apos;http://localhost:8080/main&apos;</div><div class="line">main method: POST</div><div class="line">sub method: GET</div></pre></td></tr></table></figure></p>
+<p>##<br>当变量被定义后，如果不赋值，当echo时，nginx会首先检查容器里的取值，结果它看到了“不合法”这个特殊值，然后调用取处理程序。取处理程序会向错误日志打印上面那条警告消息，然后返回一个空字符串，并把该值缓存进容器中。<br>只有“不合法”，才会使得取处理程序被调用，而“没找到”却不会。<br>当变量不存在时，便会返回“找不到”，但是“变量插值”引擎自动把“找不到”给忽略了，所以得到的是空字符串。<br>那么如何却分开变量不存在和变量本身就是空字符串呢？<br>幸运的是，通过第三方模块 ngx_lua，我们可以轻松地在 Lua 代码中做到这一点。请看下面这个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    content_by_lua &apos;</div><div class="line">        if ngx.var.arg_name == nil then</div><div class="line">            ngx.say(&quot;name: missing&quot;)</div><div class="line">        else</div><div class="line">            ngx.say(&quot;name: [&quot;, ngx.var.arg_name, &quot;]&quot;)</div><div class="line">        end</div><div class="line">    &apos;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>不过，标准的 $arg_XXX 变量还是有一些局限，比如我们用下面这个请求来测试刚才那个 /test 接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/test?name&apos;</div><div class="line">name: missing</div></pre></td></tr></table></figure></p>
+<p>此时，$arg_name 变量仍然读出“找不到”这个特殊值，这就明显有些违反常识。此外， $arg_XXX 变量在请求 URL 中有多个同名 XXX 参数时，就只会返回最先出现的那个 XXX 参数的值，而默默忽略掉其他实例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/test?name=Tom&amp;name=Jim&amp;name=Bob&apos;</div><div class="line">name: [Tom]</div></pre></td></tr></table></figure></p>
+<p>要解决这些局限，可以直接在 Lua 代码中使用 ngx_lua 模块提供的 ngx.req.get_uri_args 函数。</p>
+<h2 id="变量漫谈（八）"><a href="#变量漫谈（八）" class="headerlink" title="变量漫谈（八）"></a>变量漫谈（八）</h2><p>当变量没找到时，lua代码中的ngx.var.xxx返回nil，而nginx代码便会使得nginx拒绝加载配置文件。<br>content_by_lua不支持变量插值<br>当变量没有被初始化时，lua代码返回的却是空字符串，<br>虽然nginx变量只有字符串，但是第三方模块却可以支持其他类型，如ngx_array_var可以让nginx变量也能存放数组类型的值。<br>例子如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">location /test &#123;</div><div class="line">    array_split &quot;,&quot; $arg_names to=$array;</div><div class="line">    array_map &quot;[$array_it]&quot; $array;</div><div class="line">    array_join &quot; &quot; $array to=$res;</div><div class="line"></div><div class="line">    echo $res;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个例子中使用了 ngx_array_var 模块的 array_split、 array_map 和 array_join 这三条配置指令，其含义很接近 Perl 语言中的内建函数 split、map 和 join（当然，其他脚本语言也有类似的等价物）。我们来看看访问 /test 接口的结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl &apos;http://localhost:8080/test?names=Tom,Jim,Bob&apos;</div><div class="line">[Tom] [Jim] [Bob]</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/10/10/Nginx变量漫谈/">Nginx变量漫谈</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-10-10, 20:43:00</p>
+        <p><span>最后更新:</span>2016-11-01, 19:48:27</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/10/10/Nginx变量漫谈/" title="Nginx变量漫谈">http://yoursite.com/2016/10/10/Nginx变量漫谈/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/10/10/Nginx变量漫谈/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/10/14/baidu-CTF-10月-第一场/">
+                    baidu-CTF-10月-第一场
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/09/27/baidu-CTF-3/">
+                    baidu CTF 3
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#变量漫谈（一）"><span class="toc-number">1.</span> <span class="toc-text">变量漫谈（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量漫谈（二）"><span class="toc-number">2.</span> <span class="toc-text">变量漫谈（二）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx内建变量"><span class="toc-number">2.0.1.</span> <span class="toc-text">nginx内建变量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-变量漫谈（三）"><span class="toc-number">3.</span> <span class="toc-text">Nginx 变量漫谈（三）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-变量漫谈（四）"><span class="toc-number">4.</span> <span class="toc-text">Nginx 变量漫谈（四）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-变量漫谈（五）"><span class="toc-number">5.</span> <span class="toc-text">Nginx 变量漫谈（五）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量漫谈-（六）"><span class="toc-number">6.</span> <span class="toc-text">变量漫谈 （六）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量漫谈（八）"><span class="toc-number">7.</span> <span class="toc-text">变量漫谈（八）</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Nginx变量漫谈　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/10/10/Nginx变量漫谈/" data-title="Nginx变量漫谈" data-url="http://yoursite.com/2016/10/10/Nginx变量漫谈/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/10/14/baidu-CTF-10月-第一场/" title="上一篇: baidu-CTF-10月-第一场">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/09/27/baidu-CTF-3/" title="下一篇: baidu CTF 3">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/19/baidu面试题整理/">baidu面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/ssrf漏洞总结/">ssrf漏洞总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/17/hmm代码实现/">hmm代码实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/linux中的几个命令/">linux中的几个命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/python异常整理/">python异常整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第四场/">baidu-CTF-10月-第四场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第三场/">baidu-CTF-10月-第三场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第二场/">baidu-CTF-10月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-11月-第二场/">baidu-CTF-11月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/python集合总结/">python集合总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/lua学习笔记/">lua学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/requests模块整理/">requests模块整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/python变量作用域说明/">python变量作用域说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/python线程总结/">python线程总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx配置指令的执行顺序/">Nginx配置指令的执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx源码安装/">Nginx源码安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/31/Nginx内置的与http相关的变量/">Nginx内置的与http相关的变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/sql注入常用语句整理/">sql注入常用语句整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/python-执行系统命令/">python-执行系统命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/报错注入总结/">报错注入总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/sql-inject-attact-绕过/">sql-inject-attact-绕过</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/baidu-CTF-10月-第一场/">baidu-CTF-10月-第一场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/Nginx变量漫谈/">Nginx变量漫谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-3/">baidu CTF 3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/23/Ajax-Security/">Ajax Security</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/baidu-CTF-1/">baidu CTF 1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

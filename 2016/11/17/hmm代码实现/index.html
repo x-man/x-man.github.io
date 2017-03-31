@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="x-man" />
+
+
+
+<meta name="description" content="记录一下hmm的代码实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hmm代码实现">
+<meta property="og:url" content="http://yoursite.com/2016/11/17/hmm代码实现/index.html">
+<meta property="og:site_name" content="x-man's blog">
+<meta property="og:description" content="记录一下hmm的代码实现">
+<meta property="og:updated_time" content="2016-11-17T06:24:46.852Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hmm代码实现">
+<meta name="twitter:description" content="记录一下hmm的代码实现">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="x-man&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>hmm代码实现 | x-man&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">x-man</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">为伊消得人憔悴</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XMLHttpRequest/">XMLHttpRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baidu/">baidu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hmm/">hmm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ichunqiu/">ichunqiu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入/">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql注入，报错注入/">sql注入，报错注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssrf/">ssrf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thread/">thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechall/">wechall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器安全/">浏览器安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绕过/">绕过</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于web安全</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">x-man</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">x-man</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">为伊消得人憔悴</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-hmm代码实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/17/hmm代码实现/" class="article-date">
+      <time datetime="2016-11-17T02:44:57.000Z" itemprop="datePublished">2016-11-17</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      hmm代码实现
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hmm/">hmm</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>有些好像有错误，不要盲目的使用，要搞懂<br>实现一：<br>(评估、前向算法和暴力枚举、好像有错误)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"></div><div class="line"><span class="string">""" </span></div><div class="line">HMM module</div><div class="line"></div><div class="line">This module implements simple Hidden Markov Model class. It follows the description in </div><div class="line">Chapter 6 of Jurafsky and Martin (2008) fairly closely, with one exception: in this </div><div class="line">implementation, we assume that all states are initial states.</div><div class="line"></div><div class="line">@author: Rob Malouf </div><div class="line">@organization: Dept. of Linguistics, San Diego State University </div><div class="line">@contact: rmalouf@mail.sdsu.edu </div><div class="line">@version: 2 </div><div class="line">@since: 24-March-2008 </div><div class="line">"""</div><div class="line"></div><div class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HMM</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    <span class="string">""" </span></div><div class="line">    Class for Hidden Markov Models </div><div class="line">    An HMM is a weighted FSA which consists of:</div><div class="line"></div><div class="line">        - a set of states (0...C&#123;self.states&#125;) </div><div class="line">        - an output alphabet (C&#123;self.alphabet&#125;) </div><div class="line">        - a table of state transition probabilities (C&#123;self.A&#125;) </div><div class="line">        - a table of symbol emission probabilities (C&#123;self.B&#125;)           </div><div class="line">        - a list of initial probabilies (C&#123;self.initial&#125;)</div><div class="line"></div><div class="line">        We assume that the HMM is complete, and that all states are both initial and final </div><div class="line">        states.  </div><div class="line">    """ </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,states,alphabet,A,B,initial)</span>:</span> </div><div class="line">        <span class="string">""" </span></div><div class="line">        Create a new FSA object </div><div class="line">        @param states: states </div><div class="line">        @type states: C&#123;list&#125; </div><div class="line">        @param alphabet: output alphabet </div><div class="line">        @type finals: C&#123;list&#125; </div><div class="line">        @param A: transition probabilities </div><div class="line">        @type finals: C&#123;list&#125; of C&#123;list&#125;s </div><div class="line">        @param B: emission probabilities </div><div class="line">        @type finals: C&#123;list&#125; of C&#123;list&#125;s </div><div class="line">        @param initial: initial state probabilities </div><div class="line">        @type initial: C&#123;list&#125; of C&#123;int&#125;s</div><div class="line"></div><div class="line">        @raise ValueError: the HMM is mis-specified somehow </div><div class="line">        """</div><div class="line"></div><div class="line">        <span class="comment"># basic configuration </span></div><div class="line">        self.states = states </div><div class="line">        self.N = len(self.states) </div><div class="line">        self.alphabet = alphabet</div><div class="line"></div><div class="line">        <span class="comment"># initial probabilities </span></div><div class="line">        self.initial = initial </div><div class="line">        <span class="keyword">if</span> len(self.initial) != self.N: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'only found %d initial probabilities'</span>%len(self.initial) </div><div class="line">        <span class="keyword">if</span> abs(sum(self.initial)<span class="number">-1.0</span>) &gt; <span class="number">1e-8</span>: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'improper initial probabilities'</span> </div><div class="line">        <span class="comment"># transition probabilities </span></div><div class="line">        self.A = A </div><div class="line">        <span class="keyword">if</span> len(self.A) != self.N: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'only found %d transition probability distributions'</span>%len(self.A) </div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(self.N): </div><div class="line">            <span class="keyword">if</span> len(self.A[i]) != self.N: </div><div class="line">                <span class="keyword">raise</span> ValueError,<span class="string">'only found %d transition probabilities for state %d'</span>%(len(self.A[i]),i) </div><div class="line">            <span class="keyword">if</span> abs(sum(self.A[i])<span class="number">-1.0</span>) &gt; <span class="number">1e-8</span>: </div><div class="line">                <span class="keyword">raise</span> ValueError,<span class="string">'improper transition probabilities for state %d'</span>%i</div><div class="line"></div><div class="line">        <span class="comment"># emission probabilities        </span></div><div class="line">        self.B = B </div><div class="line">        <span class="keyword">if</span> len(self.B) != self.N: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'only found %d emission probability distributions'</span>%len(self.B) </div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(self.N): </div><div class="line">            <span class="keyword">if</span> i != self.initial:  <span class="comment"># no output from initial state </span></div><div class="line">                <span class="keyword">if</span> len(self.B[i]) != len(self.alphabet): </div><div class="line">                    <span class="keyword">raise</span> ValueError,<span class="string">'only found %d emission probabilities for state %d'</span>%(len(self.B[i]),i) </div><div class="line">                <span class="keyword">if</span> i != abs(sum(self.B[i])<span class="number">-1.0</span>) &gt; <span class="number">1e-8</span>: </div><div class="line">                    <span class="keyword">raise</span> ValueError,<span class="string">'improper emission probabilities for state %d'</span>%i</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">allseqs</span><span class="params">(self,n)</span>:</span> </div><div class="line">        <span class="string">"""Generate all possible state sequences of length n"""</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> n == <span class="number">0</span>: </div><div class="line">            <span class="keyword">yield</span> [ ] </div><div class="line">        <span class="keyword">else</span>: </div><div class="line">            <span class="keyword">for</span> first <span class="keyword">in</span> self.states: </div><div class="line">                <span class="keyword">for</span> rest <span class="keyword">in</span> self.allseqs(n<span class="number">-1</span>): </div><div class="line">                    <span class="keyword">yield</span> [first] + rest</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prob</span><span class="params">(self,S,O)</span>:</span> </div><div class="line">        <span class="string">"""Calculate P(O,S|M)"""</span></div><div class="line"></div><div class="line">        <span class="keyword">assert</span> len(O) == len(S) </div><div class="line">        <span class="keyword">assert</span> len(O) &gt; <span class="number">0</span></div><div class="line"></div><div class="line">        <span class="comment"># convert state and output names to indices </span></div><div class="line">        <span class="keyword">try</span>: </div><div class="line">            S = [self.states.index(t) <span class="keyword">for</span> t <span class="keyword">in</span> S] </div><div class="line">        <span class="keyword">except</span> ValueError: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'unknown state: %s'</span>%t </div><div class="line">        <span class="keyword">try</span>: </div><div class="line">            O = [self.alphabet.index(t) <span class="keyword">for</span> t <span class="keyword">in</span> O] </div><div class="line">        <span class="keyword">except</span> ValueError: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'unknown output: %s'</span>%t</div><div class="line"></div><div class="line">        prob = self.initial[S[<span class="number">0</span>]] * self.B[S[<span class="number">0</span>]][O[<span class="number">0</span>]] </div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> xrange(<span class="number">1</span>,len(S)): </div><div class="line">            prob *= self.A[S[t<span class="number">-1</span>]][S[t]] * self.B[S[t]][O[t]] </div><div class="line">        <span class="keyword">return</span> prob</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">probseq</span><span class="params">(self,O)</span>:</span> </div><div class="line">        <span class="string">"""Calculate P(O|M) the hard way"""</span></div><div class="line"></div><div class="line">        <span class="comment"># sum probs </span></div><div class="line">        prob = sum(self.prob(S,O) <span class="keyword">for</span> S <span class="keyword">in</span> self.allseqs(len(O)))</div><div class="line"></div><div class="line">        <span class="keyword">return</span> prob</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,O)</span>:</span> </div><div class="line">        <span class="string">"""Calculate P(O|M) using the Forward Algorithm"""</span></div><div class="line"></div><div class="line">        <span class="comment"># convert output names to indices </span></div><div class="line">        <span class="keyword">try</span>: </div><div class="line">            O = [self.alphabet.index(t) <span class="keyword">for</span> t <span class="keyword">in</span> O] </div><div class="line">        <span class="keyword">except</span> ValueError: </div><div class="line">            <span class="keyword">raise</span> ValueError,<span class="string">'unknown output: %s'</span>%t</div><div class="line"></div><div class="line">        <span class="comment"># initialize trellis </span></div><div class="line">        trellis = [ [self.initial[t]*self.B[t][O[<span class="number">0</span>]] <span class="keyword">for</span> t <span class="keyword">in</span> xrange(self.N)] ] </div><div class="line">        <span class="comment"># fill in the rest of the trellis </span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> xrange(<span class="number">1</span>,len(O)): </div><div class="line">            trellis.append([<span class="number">0.0</span>] * self.N) </div><div class="line">            <span class="keyword">for</span> s2 <span class="keyword">in</span> xrange(self.N): </div><div class="line">                <span class="keyword">for</span> s1 <span class="keyword">in</span> xrange(self.N): </div><div class="line">                    trellis[<span class="number">-1</span>][s2] += self.A[s1][s2] * self.B[s2][O[t]] * trellis[<span class="number">-2</span>][s1] </div><div class="line">        <span class="comment"># find total probability </span></div><div class="line">        <span class="keyword">return</span> sum(trellis[<span class="number">-1</span>])</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line"></div><div class="line">    <span class="comment">## set up Eisner's HMM</span></div><div class="line"></div><div class="line">    states = [ <span class="string">'HOT'</span>, <span class="string">'COLD'</span> ] </div><div class="line">    output = [ <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </div><div class="line">    transition = [ [ <span class="number">0.7</span>, <span class="number">0.3</span> ], </div><div class="line">                   [ <span class="number">0.4</span>, <span class="number">0.6</span> ] ]             </div><div class="line">    emission = [ [ <span class="number">0.2</span>, <span class="number">0.4</span>, <span class="number">0.4</span> ], </div><div class="line">                 [ <span class="number">0.5</span>, <span class="number">0.4</span>, <span class="number">0.1</span> ] ] </div><div class="line">    initial = [ <span class="number">0.8</span>, <span class="number">0.2</span> ]             </div><div class="line">    m = HMM(states,output,transition,emission,initial)</div><div class="line"></div><div class="line">    <span class="keyword">print</span> <span class="string">'P([HOT,HOT,COLD],[3,1,3]|M) ='</span>, </div><div class="line">    <span class="keyword">print</span> m.prob([<span class="string">'HOT'</span>,<span class="string">'HOT'</span>,<span class="string">'COLD'</span>],[<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>]) </div><div class="line">    <span class="keyword">print</span> <span class="string">'P([3,1,3]|M) ='</span>, </div><div class="line">    <span class="keyword">print</span> m.probseq([<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>]),<span class="string">'(by the naive method)'</span> </div><div class="line">    <span class="keyword">print</span> <span class="string">'P([3,1,3]|M) ='</span>, </div><div class="line">    <span class="keyword">print</span> m.forward([<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>]),<span class="string">'(by the Forward Algorithm)'</span></div><div class="line"></div><div class="line">main()</div></pre></td></tr></table></figure></p>
+<hr>
+<p>实现二：<br>（评估、前向算法，没有问题）<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">float</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.2</span>,<span class="number">0.3</span>&#125;,&#123;<span class="number">0.3</span>,<span class="number">0.5</span>,<span class="number">0.2</span>&#125;,&#123;<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.5</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> b[<span class="number">3</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.5</span>&#125;,&#123;<span class="number">0.4</span>,<span class="number">0.6</span>&#125;,&#123;<span class="number">0.7</span>,<span class="number">0.3</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> alpha[<span class="number">4</span>][<span class="number">3</span>];</div><div class="line">        <span class="keyword">int</span> i,j,k, count = <span class="number">1</span>;</div><div class="line">        <span class="comment">//output list</span></div><div class="line">        <span class="keyword">int</span> <span class="built_in">list</span>[<span class="number">4</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</div><div class="line">        <span class="comment">//step1:Initialization</span></div><div class="line">        alpha[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0.2</span> * <span class="number">0.5</span>;</div><div class="line">        alpha[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0.4</span> * <span class="number">0.4</span>;</div><div class="line">        alpha[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0.4</span> * <span class="number">0.7</span>;</div><div class="line">        <span class="comment">//step2:iteration</span></div><div class="line">        <span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;=<span class="number">3</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                alpha[i][j] = <span class="number">0</span>;</div><div class="line">                <span class="keyword">for</span>(k=<span class="number">0</span>; k&lt;=<span class="number">2</span>; k++)</div><div class="line">                &#123;</div><div class="line">                   alpha[i][j] += alpha[i<span class="number">-1</span>][k] * a[k][j] * b[j][<span class="built_in">list</span>[count]];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            count += <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">       <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;=<span class="number">3</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"a[%d][%d]=%f\n"</span>,i+<span class="number">1</span>,j+<span class="number">1</span>,alpha[i][j]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">       <span class="comment">//step3:end</span></div><div class="line">       <span class="built_in">printf</span>(<span class="string">"Forward:%f\n"</span>, alpha[<span class="number">3</span>][<span class="number">0</span>]+alpha[<span class="number">3</span>][<span class="number">1</span>]+alpha[<span class="number">3</span>][<span class="number">2</span>]);</div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>（评估、后向算法，没有问题）<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">float</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.2</span>,<span class="number">0.3</span>&#125;,&#123;<span class="number">0.3</span>,<span class="number">0.5</span>,<span class="number">0.2</span>&#125;,&#123;<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.5</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> b[<span class="number">3</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.5</span>&#125;,&#123;<span class="number">0.4</span>,<span class="number">0.6</span>&#125;,&#123;<span class="number">0.7</span>,<span class="number">0.3</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> result[<span class="number">4</span>][<span class="number">3</span>];</div><div class="line">        <span class="keyword">int</span> <span class="built_in">list</span>[<span class="number">4</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</div><div class="line">        result[<span class="number">3</span>][<span class="number">0</span>] = <span class="number">1</span>;</div><div class="line">        result[<span class="number">3</span>][<span class="number">1</span>] = <span class="number">1</span>;</div><div class="line">        result[<span class="number">3</span>][<span class="number">2</span>] = <span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span> i,j,k, count = <span class="number">3</span>;</div><div class="line">        <span class="keyword">for</span> (i=<span class="number">2</span>; i&gt;=<span class="number">0</span>; i--)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                result[i][j] = <span class="number">0</span>;</div><div class="line">                <span class="keyword">for</span>(k=<span class="number">0</span>; k&lt;=<span class="number">2</span>; k++)</div><div class="line">                &#123;</div><div class="line">                   result[i][j] += result[i+<span class="number">1</span>][k] * a[j][k] * b[k][<span class="built_in">list</span>[count]];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            count -= <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">       <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;=<span class="number">3</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"b[%d][%d] = %f\n"</span>,i+<span class="number">1</span>,j+<span class="number">1</span>,result[i][j]);</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"backward:%f\n"</span>, result[<span class="number">0</span>][<span class="number">0</span>]*<span class="number">0.2</span>*<span class="number">0.5</span>+result[<span class="number">0</span>][<span class="number">1</span>]*<span class="number">0.4</span>*<span class="number">0.4</span>+result[<span class="number">0</span>][<span class="number">2</span>]*<span class="number">0.4</span>*<span class="number">0.7</span>);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>（评估、前向后向结合算法，没有细看，应该没问题）<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">float</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.2</span>,<span class="number">0.3</span>&#125;,&#123;<span class="number">0.3</span>,<span class="number">0.5</span>,<span class="number">0.2</span>&#125;,&#123;<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.5</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> b[<span class="number">3</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.5</span>&#125;,&#123;<span class="number">0.4</span>,<span class="number">0.6</span>&#125;,&#123;<span class="number">0.7</span>,<span class="number">0.3</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> result_b[<span class="number">8</span>][<span class="number">3</span>];</div><div class="line">        <span class="keyword">float</span> result_f[<span class="number">8</span>][<span class="number">3</span>];</div><div class="line">        <span class="keyword">float</span> result, <span class="keyword">result_t</span>;</div><div class="line">        <span class="keyword">int</span> <span class="built_in">list</span>[<span class="number">8</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>&#125;;</div><div class="line">        result_b[<span class="number">7</span>][<span class="number">0</span>] = <span class="number">1</span>;</div><div class="line">        result_b[<span class="number">7</span>][<span class="number">1</span>] = <span class="number">1</span>;</div><div class="line">        result_b[<span class="number">7</span>][<span class="number">2</span>] = <span class="number">1</span>;</div><div class="line">        result_f[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0.2</span> * <span class="number">0.5</span>;</div><div class="line">        result_f[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0.4</span> * <span class="number">0.4</span>;</div><div class="line">        result_f[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0.4</span> * <span class="number">0.7</span>;</div><div class="line">        <span class="comment">//Backward</span></div><div class="line">        <span class="keyword">int</span> i,j,k, count = <span class="number">7</span>;</div><div class="line">        <span class="keyword">for</span> (i=<span class="number">6</span>; i&gt;=<span class="number">0</span>; i--)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                result_b[i][j] = <span class="number">0</span>;</div><div class="line">                <span class="keyword">for</span>(k=<span class="number">0</span>; k&lt;=<span class="number">2</span>; k++)</div><div class="line">                &#123;</div><div class="line">                   result_b[i][j] += result_b[i+<span class="number">1</span>][k] * a[j][k] * b[k][<span class="built_in">list</span>[count]];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            count -= <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">       <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;=<span class="number">7</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"b[%d][%d]= %f\n"</span>,i+<span class="number">1</span>,j+<span class="number">1</span>, result_b[i][j]);</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Backward:%f\n"</span>, result_b[<span class="number">0</span>][<span class="number">0</span>]*<span class="number">0.2</span>*<span class="number">0.5</span>+result_b[<span class="number">0</span>][<span class="number">1</span>]*<span class="number">0.4</span>*<span class="number">0.4</span>+result_b[<span class="number">0</span>][<span class="number">2</span>]*<span class="number">0.4</span>*<span class="number">0.7</span>);</div><div class="line">        <span class="comment">//Forward</span></div><div class="line">        count = <span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;=<span class="number">7</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                result_f[i][j] = <span class="number">0</span>;</div><div class="line">                <span class="keyword">for</span>(k=<span class="number">0</span>; k&lt;=<span class="number">2</span>; k++)</div><div class="line">                &#123;</div><div class="line">                    result_f[i][j] += result_f[i<span class="number">-1</span>][k] * a[k][j] * b[j][<span class="built_in">list</span>[count]];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            count += <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;=<span class="number">7</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"a[%d][%d]= %f\n"</span>, i+<span class="number">1</span>, j+<span class="number">1</span>, result_f[i][j]);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        result = result_f[<span class="number">7</span>][<span class="number">0</span>] + result_f[<span class="number">7</span>][<span class="number">1</span>] + result_f[<span class="number">7</span>][<span class="number">2</span>];</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Forward: %f\n"</span>, result);</div><div class="line">        </div><div class="line">        <span class="keyword">result_t</span> = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;=<span class="number">2</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">result_t</span> += result_f[<span class="number">3</span>][i] * result_b[<span class="number">3</span>][i];</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Result:%f\n"</span>, result_f[<span class="number">3</span>][<span class="number">2</span>]*result_b[<span class="number">3</span>][<span class="number">2</span>]/<span class="keyword">result_t</span>);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>（解码、维特比算法，没有问题）<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">float</span> a[<span class="number">3</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.2</span>,<span class="number">0.3</span>&#125;,&#123;<span class="number">0.3</span>,<span class="number">0.5</span>,<span class="number">0.2</span>&#125;,&#123;<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.5</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> b[<span class="number">3</span>][<span class="number">2</span>] = &#123;&#123;<span class="number">0.5</span>,<span class="number">0.5</span>&#125;,&#123;<span class="number">0.4</span>,<span class="number">0.6</span>&#125;,&#123;<span class="number">0.7</span>,<span class="number">0.3</span>&#125;&#125;;</div><div class="line">        <span class="keyword">float</span> result[<span class="number">4</span>][<span class="number">3</span>];</div><div class="line">        <span class="keyword">int</span> <span class="built_in">list</span>[<span class="number">4</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</div><div class="line">        <span class="keyword">int</span> max[<span class="number">4</span>][<span class="number">3</span>];</div><div class="line">        <span class="keyword">float</span> tmp;</div><div class="line">        <span class="comment">//step1:Initialization</span></div><div class="line">        result[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0.2</span>*<span class="number">0.5</span>;</div><div class="line">        result[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0.4</span>*<span class="number">0.4</span>;</div><div class="line">        result[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0.4</span>*<span class="number">0.7</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">int</span> i,j,k, count = <span class="number">1</span>, max_node;</div><div class="line">        <span class="keyword">float</span> max_v;</div><div class="line">        <span class="comment">//step2:归纳运算</span></div><div class="line">        <span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;=<span class="number">3</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                tmp = result[i<span class="number">-1</span>][<span class="number">0</span>] * a[<span class="number">0</span>][j] * b[j][<span class="built_in">list</span>[count]];</div><div class="line">                max[i][j] = <span class="number">0</span>;</div><div class="line">                <span class="keyword">for</span>(k=<span class="number">1</span>; k&lt;=<span class="number">2</span>; k++)</div><div class="line">                &#123;</div><div class="line">                    <span class="keyword">if</span>(result[i<span class="number">-1</span>][k] * a[k][j] * b[j][<span class="built_in">list</span>[count]] &gt; tmp)</div><div class="line">                    &#123;</div><div class="line">                        tmp = result[i<span class="number">-1</span>][k] * a[k][j]* b[j][<span class="built_in">list</span>[count]];</div><div class="line">                        max[i][j] = k;</div><div class="line">                    &#125;</div><div class="line">                   result[i][j] = tmp;</div><div class="line">                &#125;</div><div class="line">                max_v = result[<span class="number">3</span>][<span class="number">0</span>];</div><div class="line">                max_node = <span class="number">0</span>;</div><div class="line">                <span class="keyword">for</span> (k=<span class="number">1</span>; k&lt;=<span class="number">2</span>; k++)</div><div class="line">                &#123;</div><div class="line">                    <span class="keyword">if</span>(result[<span class="number">3</span>][k] &gt; max_v)</div><div class="line">                    &#123;</div><div class="line">                        max_v = result[<span class="number">3</span>][k];</div><div class="line">                        max_node = k;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            count += <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//step3:终结</span></div><div class="line">       <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;=<span class="number">3</span>; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span>(j=<span class="number">0</span>; j&lt;=<span class="number">2</span>; j++)</div><div class="line">            &#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"%d %d     %f\n"</span>,i+<span class="number">1</span>,j+<span class="number">1</span>,result[i][j]);</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Pmax=%f\n"</span>, max_v);</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"step4:%d   \n"</span>, max_node+<span class="number">1</span>);</div><div class="line">        <span class="comment">//step4:回溯</span></div><div class="line">        <span class="keyword">for</span>(k=<span class="number">3</span>; k&gt;=<span class="number">1</span>; k--)</div><div class="line">        &#123;</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"step%d:%d  \n"</span>,k, max[k][max_node]+<span class="number">1</span>);</div><div class="line">            max_node = max[k][max_node];</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>实现三：<br>（评估、学习、解码都包含，大致没问题）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#-*-coding:UTF-8-*-</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HMM</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, Ann, Bnm, pi1n)</span>:</span></div><div class="line">        self.A = np.array(Ann)</div><div class="line">        self.B = np.array(Bnm)</div><div class="line">        self.pi = np.array(pi1n)</div><div class="line">        self.N = self.A.shape[<span class="number">0</span>]</div><div class="line">        self.M = self.B.shape[<span class="number">1</span>]</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printhmm</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"=================================================="</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"HMM content: N ="</span>,self.N,<span class="string">",M ="</span>,self.M</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            <span class="keyword">if</span> i==<span class="number">0</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">"hmm.A "</span>,self.A[i,:],<span class="string">" hmm.B "</span>,self.B[i,:]</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">"      "</span>,self.A[i,:],<span class="string">"       "</span>,self.B[i,:]</div><div class="line">        <span class="keyword">print</span> <span class="string">"hmm.pi"</span>,self.pi</div><div class="line">        <span class="keyword">print</span> <span class="string">"=================================================="</span></div><div class="line"></div><div class="line">    <span class="comment"># 函数名称：Forward *功能：前向算法估计参数 *参数:phmm:指向HMM的指针</span></div><div class="line">    <span class="comment"># T:观察值序列的长度 O:观察值序列    </span></div><div class="line">    <span class="comment"># alpha:运算中用到的临时数组 pprob:返回值,所要求的概率</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Forward</span><span class="params">(self,T,O,alpha,pprob)</span>:</span></div><div class="line">    <span class="comment">#     1. Initialization 初始化</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            alpha[<span class="number">0</span>,i] = self.pi[i]*self.B[i,O[<span class="number">0</span>]]</div><div class="line"></div><div class="line">    <span class="comment">#     2. Induction 递归</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>):</div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                sum = <span class="number">0.0</span></div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                    sum += alpha[t,i]*self.A[i,j]</div><div class="line">                alpha[t+<span class="number">1</span>,j] =sum*self.B[j,O[t+<span class="number">1</span>]]</div><div class="line">    <span class="comment">#     3. Termination 终止</span></div><div class="line">        sum = <span class="number">0.0</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            sum += alpha[T<span class="number">-1</span>,i]</div><div class="line">        pprob[<span class="number">0</span>] += sum</div><div class="line"></div><div class="line">    <span class="comment"># 带修正的前向算法</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ForwardWithScale</span><span class="params">(self,T,O,alpha,scale,pprob)</span>:</span></div><div class="line">        scale[<span class="number">0</span>] = <span class="number">0.0</span></div><div class="line">    <span class="comment">#     1. Initialization</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            alpha[<span class="number">0</span>,i] = self.pi[i]*self.B[i,O[<span class="number">0</span>]]</div><div class="line">            scale[<span class="number">0</span>] += alpha[<span class="number">0</span>,i]</div><div class="line"></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            alpha[<span class="number">0</span>,i] /= scale[<span class="number">0</span>]</div><div class="line"></div><div class="line">    <span class="comment">#     2. Induction</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>):</div><div class="line">            scale[t+<span class="number">1</span>] = <span class="number">0.0</span></div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                sum = <span class="number">0.0</span></div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                    sum += alpha[t,i]*self.A[i,j]</div><div class="line"></div><div class="line">                alpha[t+<span class="number">1</span>,j] = sum * self.B[j,O[t+<span class="number">1</span>]]</div><div class="line">                scale[t+<span class="number">1</span>] += alpha[t+<span class="number">1</span>,j]</div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                alpha[t+<span class="number">1</span>,j] /= scale[t+<span class="number">1</span>]</div><div class="line"></div><div class="line">    <span class="comment">#     3. Termination</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T):</div><div class="line">            pprob[<span class="number">0</span>] += np.log(scale[t])</div><div class="line"></div><div class="line">    <span class="comment"># 函数名称：Backward * 功能:后向算法估计参数 * 参数:phmm:指向HMM的指针 </span></div><div class="line">    <span class="comment"># T:观察值序列的长度 O:观察值序列 </span></div><div class="line">    <span class="comment"># beta:运算中用到的临时数组 pprob:返回值，所要求的概率</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Backward</span><span class="params">(self,T,O,beta,pprob)</span>:</span></div><div class="line">    <span class="comment">#     1. Intialization</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            beta[T<span class="number">-1</span>,i] = <span class="number">1.0</span></div><div class="line">    <span class="comment">#     2. Induction</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">-1</span>):</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                sum = <span class="number">0.0</span></div><div class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                    sum += self.A[i,j]*self.B[j,O[t+<span class="number">1</span>]]*beta[t+<span class="number">1</span>,j]</div><div class="line">                beta[t,i] = sum</div><div class="line"></div><div class="line">    <span class="comment">#     3. Termination</span></div><div class="line">        pprob[<span class="number">0</span>] = <span class="number">0.0</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            pprob[<span class="number">0</span>] += self.pi[i]*self.B[i,O[<span class="number">0</span>]]*beta[<span class="number">0</span>,i]</div><div class="line"></div><div class="line">    <span class="comment"># 带修正的后向算法</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">BackwardWithScale</span><span class="params">(self,T,O,beta,scale)</span>:</span></div><div class="line">    <span class="comment">#     1. Intialization</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">            beta[T<span class="number">-1</span>,i] = <span class="number">1.0</span></div><div class="line"></div><div class="line">    <span class="comment">#     2. Induction</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">-1</span>):</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                sum = <span class="number">0.0</span></div><div class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                    sum += self.A[i,j]*self.B[j,O[t+<span class="number">1</span>]]*beta[t+<span class="number">1</span>,j]</div><div class="line">                beta[t,i] = sum / scale[t+<span class="number">1</span>]</div><div class="line"></div><div class="line">    <span class="comment"># Viterbi算法</span></div><div class="line">    <span class="comment"># 输入：A，B，pi,O 输出P(O|lambda)最大时Poptimal的路径I</span></div><div class="line">   	<span class="function"><span class="keyword">def</span> <span class="title">viterbi</span><span class="params">(self,O)</span>:</span></div><div class="line">        T = len(O)</div><div class="line">        <span class="comment"># 初始化</span></div><div class="line">        delta = np.zeros((T,self.N),np.float)  </div><div class="line">        phi = np.zeros((T,self.N),np.float)  </div><div class="line">        I = np.zeros(T)</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):  </div><div class="line">            delta[<span class="number">0</span>,i] = self.pi[i]*self.B[i,O[<span class="number">0</span>]]  </div><div class="line">            phi[<span class="number">0</span>,i] = <span class="number">0</span></div><div class="line">        <span class="comment"># 递推</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>,T):  </div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):                                  </div><div class="line">                delta[t,i] = self.B[i,O[t]]*np.array([delta[t<span class="number">-1</span>,j]*self.A[j,i]  <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N)]).max()</div><div class="line">                phi[t,i] = np.array([delta[t<span class="number">-1</span>,j]*self.A[j,i]  <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N)]).argmax()</div><div class="line">        <span class="comment"># 终结</span></div><div class="line">        prob = delta[T<span class="number">-1</span>,:].max()  </div><div class="line">        I[T<span class="number">-1</span>] = delta[T<span class="number">-1</span>,:].argmax()</div><div class="line">        <span class="comment"># 状态序列求取   </span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">-1</span>): </div><div class="line">            I[t] = phi[t+<span class="number">1</span>,I[t+<span class="number">1</span>]]</div><div class="line">        <span class="keyword">return</span> I,prob</div><div class="line"></div><div class="line">    <span class="comment"># 计算gamma : 时刻t时马尔可夫链处于状态Si的概率    </span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ComputeGamma</span><span class="params">(self, T, alpha, beta, gamma)</span>:</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T):</div><div class="line">            denominator = <span class="number">0.0</span></div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                gamma[t,j] = alpha[t,j]*beta[t,j]</div><div class="line">                denominator += gamma[t,j]</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                gamma[t,i] = gamma[t,i]/denominator</div><div class="line"></div><div class="line">    <span class="comment"># 计算sai(i,j) 为给定训练序列O和模型lambda时：</span></div><div class="line">    <span class="comment"># 时刻t是马尔可夫链处于Si状态，二时刻t+1处于Sj状态的概率</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ComputeXi</span><span class="params">(self,T,O,alpha,beta,gamma,xi)</span>:</span></div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>):</div><div class="line">            sum = <span class="number">0.0</span></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">               	<span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                    xi[t,i,j] = alpha[t,i]*beta[t+<span class="number">1</span>,j]*self.A[i,j]*self.B[j,O[t+<span class="number">1</span>]]</div><div class="line">                    sum += xi[t,i,j]</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                    xi[t,i,j] /= sum</div><div class="line"></div><div class="line">    <span class="comment"># Baum-Welch算法</span></div><div class="line">    <span class="comment"># 输入 L个观察序列O，初始模型：HMM=&#123;A,B,pi,N,M&#125;</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">BaumWelch</span><span class="params">(self,L,T,O,alpha,beta,gamma)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"BaumWelch"</span></div><div class="line">        DELTA = <span class="number">0.01</span> ; round = <span class="number">0</span> ; flag = <span class="number">1</span> ; probf = [<span class="number">0.0</span>]</div><div class="line">        delta = <span class="number">0.0</span> ; deltaprev = <span class="number">0.0</span> ; probprev = <span class="number">0.0</span> ; ratio = <span class="number">0.0</span> ; deltaprev = <span class="number">10e-70</span></div><div class="line"></div><div class="line">        xi = np.zeros((T,self.N,self.N))</div><div class="line">        pi = np.zeros((T),np.float)</div><div class="line">        denominatorA = np.zeros((self.N),np.float)</div><div class="line">        denominatorB = np.zeros((self.N),np.float)</div><div class="line">        numeratorA = np.zeros((self.N,self.N),np.float)</div><div class="line">        numeratorB = np.zeros((self.N,self.M),np.float)</div><div class="line">        scale = np.zeros((T),np.float)</div><div class="line"></div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span> :</div><div class="line">            probf[<span class="number">0</span>] = <span class="number">0</span></div><div class="line">            <span class="comment"># E - step</span></div><div class="line">            <span class="keyword">for</span> l <span class="keyword">in</span> range(L):</div><div class="line">                self.ForwardWithScale(T,O[l],alpha,scale,probf)</div><div class="line">                self.BackwardWithScale(T,O[l],beta,scale)</div><div class="line">                self.ComputeGamma(T,alpha,beta,gamma)</div><div class="line">                self.ComputeXi(T,O[l],alpha,beta,gamma,xi)</div><div class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                    pi[i] += gamma[<span class="number">0</span>,i]</div><div class="line">                    <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>): </div><div class="line">                        denominatorA[i] += gamma[t,i]</div><div class="line">                        denominatorB[i] += gamma[t,i]</div><div class="line">                    denominatorB[i] += gamma[T<span class="number">-1</span>,i]</div><div class="line"></div><div class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                        <span class="keyword">for</span> t <span class="keyword">in</span> range(T<span class="number">-1</span>):</div><div class="line">                            numeratorA[i,j] += xi[t,i,j]</div><div class="line">                    <span class="keyword">for</span> k <span class="keyword">in</span> range(self.M):</div><div class="line">                        <span class="keyword">for</span> t <span class="keyword">in</span> range(T):</div><div class="line">                            <span class="keyword">if</span> O[l][t] == k:</div><div class="line">                                numeratorB[i,k] += gamma[t,i]</div><div class="line"></div><div class="line">            <span class="comment"># M - step</span></div><div class="line">            <span class="comment"># 重估状态转移矩阵和观察概率矩阵</span></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.N):</div><div class="line">                self.pi[i] = <span class="number">0.001</span>/self.N + <span class="number">0.999</span>*pi[i]/L</div><div class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(self.N):</div><div class="line">                    self.A[i,j] = <span class="number">0.001</span>/self.N + <span class="number">0.999</span>*numeratorA[i,j]/denominatorA[i]</div><div class="line">                    numeratorA[i,j] = <span class="number">0.0</span></div><div class="line"></div><div class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(self.M):</div><div class="line">                    self.B[i,k] = <span class="number">0.001</span>/self.M + <span class="number">0.999</span>*numeratorB[i,k]/denominatorB[i]</div><div class="line">                    numeratorB[i,k] = <span class="number">0.0</span></div><div class="line"></div><div class="line">                pi[i]=denominatorA[i]=denominatorB[i]=<span class="number">0.0</span>;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> flag == <span class="number">1</span>:</div><div class="line">                flag = <span class="number">0</span></div><div class="line">                probprev = probf[<span class="number">0</span>]</div><div class="line">                ratio = <span class="number">1</span></div><div class="line">                <span class="keyword">continue</span></div><div class="line">    </div><div class="line">            delta = probf[<span class="number">0</span>] - probprev</div><div class="line">            ratio = delta / deltaprev</div><div class="line">            probprev = probf[<span class="number">0</span>]</div><div class="line">            deltaprev = delta</div><div class="line">            round += <span class="number">1</span></div><div class="line">            </div><div class="line">            <span class="keyword">if</span> ratio &lt;= DELTA :</div><div class="line">                <span class="keyword">print</span> <span class="string">"num iteration "</span>,round</div><div class="line">                <span class="keyword">break</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">"python my HMM"</span></div><div class="line"></div><div class="line">    A = [[<span class="number">0.8125</span>,<span class="number">0.1875</span>],[<span class="number">0.2</span>,<span class="number">0.8</span>]]</div><div class="line">    B = [[<span class="number">0.875</span>,<span class="number">0.125</span>],[<span class="number">0.25</span>,<span class="number">0.75</span>]]</div><div class="line">    pi = [<span class="number">0.5</span>,<span class="number">0.5</span>]</div><div class="line">    hmm = HMM(A,B,pi)</div><div class="line"></div><div class="line">    O = [[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</div><div class="line">    [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],</div><div class="line">    [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]</div><div class="line">    L = len(O)</div><div class="line">    T = len(O[<span class="number">0</span>])  <span class="comment"># T等于最长序列的长度就好了</span></div><div class="line">    alpha = np.zeros((T,hmm.N),np.float)</div><div class="line">    beta = np.zeros((T,hmm.N),np.float)</div><div class="line">    gamma = np.zeros((T,hmm.N),np.float)</div><div class="line">    hmm.BaumWelch(L,T,O,alpha,beta,gamma)</div><div class="line"></div><div class="line">    hmm.printhmm()</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/17/hmm代码实现/">hmm代码实现</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">x-man</a></p>
+        <p><span>发布时间:</span>2016-11-17, 10:44:57</p>
+        <p><span>最后更新:</span>2016-11-17, 14:24:46</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/17/hmm代码实现/" title="hmm代码实现">http://yoursite.com/2016/11/17/hmm代码实现/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/11/17/hmm代码实现/　　作者: x-man" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/11/18/ssrf漏洞总结/">
+                    ssrf漏洞总结
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/15/linux中的几个命令/">
+                    linux中的几个命令
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"hmm代码实现　| x-man's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/11/17/hmm代码实现/" data-title="hmm代码实现" data-url="http://yoursite.com/2016/11/17/hmm代码实现/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"x-man"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/18/ssrf漏洞总结/" title="上一篇: ssrf漏洞总结">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/15/linux中的几个命令/" title="下一篇: linux中的几个命令">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/19/baidu面试题整理/">baidu面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/18/ssrf漏洞总结/">ssrf漏洞总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/17/hmm代码实现/">hmm代码实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/linux中的几个命令/">linux中的几个命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/python异常整理/">python异常整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第四场/">baidu-CTF-10月-第四场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第三场/">baidu-CTF-10月-第三场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-10月-第二场/">baidu-CTF-10月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/baidu-CTF-11月-第二场/">baidu-CTF-11月-第二场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/python集合总结/">python集合总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/03/lua学习笔记/">lua学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/requests模块整理/">requests模块整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/python变量作用域说明/">python变量作用域说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/python线程总结/">python线程总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx配置指令的执行顺序/">Nginx配置指令的执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/Nginx源码安装/">Nginx源码安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/31/Nginx内置的与http相关的变量/">Nginx内置的与http相关的变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/sql注入常用语句整理/">sql注入常用语句整理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/python-执行系统命令/">python-执行系统命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/报错注入总结/">报错注入总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/sql-inject-attact-绕过/">sql-inject-attact-绕过</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/浏览器本地文件读取及远程命令执行/">浏览器本地文件读取及远程命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/14/baidu-CTF-10月-第一场/">baidu-CTF-10月-第一场</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/Nginx变量漫谈/">Nginx变量漫谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-3/">baidu CTF 3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/baidu-CTF-2/">baidu CTF 2</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/23/Ajax-Security/">Ajax Security</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/baidu-CTF-1/">baidu CTF 1</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/wechall-writeup-about-Crypto/">wechall writeup about Crypto</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/my-blog-is-ok/">my blog is ok</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/13/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 x-man
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
